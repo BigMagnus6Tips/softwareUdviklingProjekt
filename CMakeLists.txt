@@ -4,7 +4,8 @@ project(Software_Udvikling)
 
 
 # Automatically find all .cpp files
-file(GLOB SRC_FILES "*.cpp")
+file(GLOB SRC_FILES "*.cpp" CMAKE_CONFIGURE_DEPENDS)
 
 # Create the executable with all source files
 add_executable(main ${SRC_FILES})
+include_directories(include)
