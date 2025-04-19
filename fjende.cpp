@@ -7,3 +7,5 @@ fjende::fjende(/* args */)
 fjende::~fjende()
 {
 }
+
+
