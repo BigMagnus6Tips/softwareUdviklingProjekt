@@ -4,9 +4,7 @@
 #include <string>
 
 
-kamp::kamp(/* args */)
-{
-}
+
 
 kamp::~kamp()
 {
@@ -56,6 +54,4 @@ void kamp::slutKamp()
     {
         std::cout << fjende.getName() << " er død!" << std::endl;
     }
-    else
-    {
-        std::cout << "Kampen
+}
