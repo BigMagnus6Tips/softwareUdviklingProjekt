@@ -26,23 +26,28 @@ void menu::start()
 
 void menu::visMenu()
 {
-    std::cout << "1. Start kamp" << std::endl;
-    std::cout << "2. Afslut" << std::endl;
-    int valg;
-    std::cin >> valg;
-    switch (valg)
+    while (spiller.getHp() > 0)
     {
-    case 1:
-        vælgKamp();
-        break;
-    case 2:
-        std::cout << "Farvel!" << std::endl;
-        break;
-    default:
-        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
-        visMenu();
-        break;
+        std::cout << "Vælg en mulighed:" << std::endl;
+        std::cout << "1. Start kamp" << std::endl;
+        std::cout << "2. Afslut" << std::endl;
+        int valg;
+        std::cin >> valg;
+        switch (valg)
+        {
+        case 1:
+            vælgKamp();
+            break;
+        case 2:
+            std::cout << "Farvel!" << std::endl;
+            return;
+        default:
+            std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+            break;
+        }
     }
+    std::cout << "Du er død! Spillet er slut." << std::endl;
+    
 }
 void menu::vælgKamp()
 {

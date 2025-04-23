@@ -15,6 +15,7 @@ public:
     ~hero();
     void levelUp();
     void printHero();
+    void giveExperience(int exp) { experience += exp; }
 };
 
 

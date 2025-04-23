@@ -2,15 +2,17 @@
 #include <string>
 #include <vector>
 #include "character.h"
+#include "hero.h"
+#include "fjende.h"
 class kamp
 {
 private:
-    character& spiller;
-    character& fjende;
+    hero& spiller;
+    fjende& modstander;
     
 public:
     kamp();
-    kamp(character& spiller, character& fjende);
+    kamp(hero& spiller, fjende& modstander);
     ~kamp();
     void startKamp();
     void spillerAngrib();

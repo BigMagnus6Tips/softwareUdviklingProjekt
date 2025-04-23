@@ -12,5 +12,6 @@ public:
     fjende(/* args */);
     fjende(std::string name, int health, int attackPower, int experienceGiven);
     ~fjende();
+    int getExperienceGiven() const { return experienceGiven; }
 };
 

@@ -4,9 +4,12 @@
 #include "character.h"
 #include "fjende.h"
 #include "hero.h"
-#include "menu.h"
+#include "include/menu.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
-    return 0;
+
+    menu m = menu();
+    m.start();
+
 }

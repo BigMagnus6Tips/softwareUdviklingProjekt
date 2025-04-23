@@ -8,7 +8,7 @@ hero::hero(/* args */)
 {
 }
 
-hero::hero(std::string name, int health, int attackPower) : character(name, health, attackPower), level(1), experience(0), maxExperience(100)
+hero::hero(std::string name, int health, int attackPower) : character(name, health, attackPower), level(1), experience(0), maxExperience(1000)
 {
 }
 
