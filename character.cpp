@@ -5,6 +5,11 @@ character::character(/* args */)
 {
 }
 
+character::character(std::string name, int maxhp, int styrke)
+    : name(name), maxHp(maxhp), hp(maxhp), styrke(styrke)
+{
+}
+
 character::~character()
 {
 }

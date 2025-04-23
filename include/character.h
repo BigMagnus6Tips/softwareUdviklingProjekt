@@ -11,6 +11,7 @@ private:
 
 public:
     character(/* args */);
+    character(std::string name, int maxhp, int styrke);
     ~character();
     std::string getName() const { return name; }
     int getHp() const { return hp; }
