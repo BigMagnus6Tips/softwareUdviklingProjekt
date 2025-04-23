@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-
+// Constructor for menu class
 menu::menu(/* args */)
 {
 }
@@ -16,14 +16,18 @@ menu::~menu()
 {
 }
 
+// Starts the game by loading enemies, choosing a hero, and displaying the menu
+// Prints a welcome message
 void menu::start()
 {
-    std::cout << "Velkommen til kampen!" << std::endl;
+    std::cout << "Velkommen til eventyret!" << std::endl;
     loadFjender();
-    chooseHero();
+    vaelgHero();
     visMenu();
 }
 
+// Displays the menu options for the player
+// Allows the player to start a battle or exit the game
 void menu::visMenu()
 {
     while (spiller.getHp() > 0)
@@ -36,7 +40,7 @@ void menu::visMenu()
         switch (valg)
         {
         case 1:
-            vælgKamp();
+            vaelgKamp();
             break;
         case 2:
             std::cout << "Farvel!" << std::endl;
@@ -49,7 +53,10 @@ void menu::visMenu()
     std::cout << "Du er død! Spillet er slut." << std::endl;
     
 }
-void menu::vælgKamp()
+
+// allows the player to chose an enemy to fight
+// the player has to choose an enemy
+void menu::vaelgKamp()
 {
     std::cout << "Vælg fjende:" << std::endl;
     for (size_t i = 0; i < fjender.size(); i++)
@@ -61,13 +68,15 @@ void menu::vælgKamp()
     if (valg < 1 || valg > fjender.size())
     {
         std::cout << "Ugyldigt valg, prøv igen." << std::endl;
-        vælgKamp();
+        vaelgKamp();
         return;
     }
     fjende valgtFjende = fjender[valg - 1];
     kamp kamp(spiller, valgtFjende);
     kamp.startKamp();
 }
+
+// loads the enemies
 void menu::loadFjender()
 {
 
@@ -86,6 +95,8 @@ void menu::loadFjender()
 
 }
 
+// creates a new hero
+// the player has to enter a name
 void menu::newHero()
 {
     std::string navn;
@@ -95,6 +106,9 @@ void menu::newHero()
 
     spiller = hero(navn, 10, 2);
 }
+
+// loads a preloaded hero
+// the player has to choose a hero from a list
 void menu::loadHero()
 {
     std::vector<hero> preloadedHeroes;
@@ -123,7 +137,8 @@ void menu::loadHero()
     std::cout << "Styrke: " << spiller.getStyrke() << std::endl;
 }
 
-void menu::chooseHero()
+// allows the player to choose between creating a new hero or loading a preloaded hero
+void menu::vaelgHero()
 {
     std::cout << "Vil du lave en ny helt (1) eller vælge en forudindlæst helt (2)?" << std::endl;
     int valg;
@@ -138,7 +153,7 @@ void menu::chooseHero()
         break;
     default:
         std::cout << "Ugyldigt valg, prøv igen." << std::endl;
-        chooseHero();
+        vaelgHero();
         break;
     }
 }

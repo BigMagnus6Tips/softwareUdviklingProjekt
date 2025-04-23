@@ -8,6 +8,8 @@ hero::hero(/* args */)
 {
 }
 
+// Constructor for hero class
+// Initializes the hero with a name, health, and attack power
 hero::hero(std::string name, int health, int attackPower) : character(name, health, attackPower), level(1), experience(0), maxExperience(1000)
 {
 }
@@ -16,6 +18,8 @@ hero::~hero()
 {
 }
 
+// Increases the hero's level, health, and attack power
+// Prints a message indicating the hero has leveled up
 void hero::levelUp()
 {
     level++;
@@ -25,6 +29,8 @@ void hero::levelUp()
     
 }
 
+// Prints the hero's name, level, health, strength, and experience
+// Displays the current experience and maximum experience required for the next level
 void hero::printHero()
 {
     std::cout << "Navn: " << getName() << std::endl;
@@ -34,6 +40,8 @@ void hero::printHero()
     std::cout << "Experience: " << experience << "/" << maxExperience << std::endl;
 }
 
+// Increases the hero's experience by a specified amount
+// If the experience exceeds the maximum, the hero levels up
 void hero::giveExperience(int exp)
 {
     experience += exp;

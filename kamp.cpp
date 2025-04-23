@@ -12,10 +12,16 @@ kamp::~kamp()
 {
 }
 
+// Constructor for the kamp class
+// Initializes the player and enemy characters
 kamp::kamp(hero& spiller, fjende& modstander) : spiller(spiller), modstander(modstander)
 {
 }
 
+// Starts the battle between the player and the enemy
+// Displays a message indicating the battle has started
+// Player and enemy take turns attacking each other
+// The battle continues until one of them is dead
 void kamp::startKamp()
 {
     std::cout << "Kamp starter!" << std::endl;
@@ -38,6 +44,8 @@ void kamp::startKamp()
     
 }
 
+// The player attacks the enemy
+// Displays a message indicating the player is attacking
 void kamp::spillerAngrib()
 {
     std::cout << spiller.getName() << " angriber " << modstander.getName() << "!" << std::endl;
@@ -47,6 +55,9 @@ void kamp::spillerAngrib()
     }    
     
 }
+
+// The enemy attacks the player
+// Displays a message indicating the enemy is attacking
 void kamp::fjendeAngrib()
 {
     std::cout << modstander.getName() << " angriber " << spiller.getName() << "!" << std::endl;
@@ -56,11 +67,18 @@ void kamp::fjendeAngrib()
     }
     
 }
+
+// Displays the status of both the player and the enemy
+// Shows their names and current health points
 void kamp::visStatus()
 {
     std::cout << spiller.getName() << " HP: " << spiller.getHp() << std::endl;
     std::cout << modstander.getName() << " HP: " << modstander.getHp() << std::endl;
 }
+
+// Ends the battle and checks if the player or enemy is dead
+// If the player wins, they gain experience
+// If the enemy wins, the player is dead
 void kamp::slutKamp()
 {
     if (spiller.getHp() <= 0)

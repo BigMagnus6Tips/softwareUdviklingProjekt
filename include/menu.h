@@ -17,9 +17,9 @@ public:
     ~menu();
     void start();
     void visMenu();
-    void vælgKamp();
+    void vaelgKamp();
     void loadFjender();
-    void chooseHero();
+    void vaelgHero();
     void newHero();
     void loadHero();
 
