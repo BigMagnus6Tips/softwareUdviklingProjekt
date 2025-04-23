@@ -22,6 +22,7 @@ void hero::levelUp()
     setHp(getHp() + 20);
     setStyrke(getStyrke() + 5);
     std::cout << getName() << " er steget til niveau " << level << "!" << std::endl;
+    
 }
 
 void hero::printHero()
@@ -30,5 +31,16 @@ void hero::printHero()
     std::cout << "Niveau: " << level << std::endl;
     std::cout << "Liv: " << getHp() << std::endl;
     std::cout << "Styrke: " << getStyrke() << std::endl;
-    std::cout << "Erfaring: " << experience << "/" << maxExperience << std::endl;
+    std::cout << "Experience: " << experience << "/" << maxExperience << std::endl;
+}
+
+void hero::giveExperience(int exp)
+{
+    experience += exp;
+    std::cout << getName() << " har modtaget " << exp << " erfaring!" << std::endl;
+    if (experience >= maxExperience)
+    {
+        levelUp();
+        experience -= maxExperience; // Reset experience after leveling up
+    }
 }
