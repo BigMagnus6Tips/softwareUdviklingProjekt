@@ -19,6 +19,9 @@ public:
     void visMenu();
     void vælgKamp();
     void loadFjender();
+    void chooseHero();
+    void newHero();
+    void loadHero();
 
 
 };
