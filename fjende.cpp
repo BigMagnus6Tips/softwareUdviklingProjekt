@@ -1,4 +1,4 @@
-#include "include/fjende.h"
+#include "fjende.h"
 
 fjende::fjende(/* args */)
 {

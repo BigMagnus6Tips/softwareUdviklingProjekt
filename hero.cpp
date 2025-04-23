@@ -1,8 +1,8 @@
-#include "include/hero.h"
+#include "hero.h"
 #include <iostream>
 #include <string>
 #include <vector>
-#include "include/character.h"
+#include "character.h"
 
 hero::hero(/* args */)
 {
@@ -24,3 +24,11 @@ void hero::levelUp()
     std::cout << getName() << " er steget til niveau " << level << "!" << std::endl;
 }
 
+void hero::printHero()
+{
+    std::cout << "Navn: " << getName() << std::endl;
+    std::cout << "Niveau: " << level << std::endl;
+    std::cout << "Liv: " << getHp() << std::endl;
+    std::cout << "Styrke: " << getStyrke() << std::endl;
+    std::cout << "Erfaring: " << experience << "/" << maxExperience << std::endl;
+}

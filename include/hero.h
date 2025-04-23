@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "include/character.h"
+#include "character.h"
 class hero : public character
 {
 private:
@@ -14,7 +14,7 @@ public:
     hero(std::string name, int health, int attackPower);
     ~hero();
     void levelUp();
-
+    void printHero();
 };
 
 

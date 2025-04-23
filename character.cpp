@@ -1,4 +1,4 @@
-#include "include/character.h"
+#include "character.h"
 #include <iostream>
 
 character::character(/* args */)

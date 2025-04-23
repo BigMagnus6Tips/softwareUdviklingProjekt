@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "include/character.h"
+#include "character.h"
 class fjende : public character
 {
 private:

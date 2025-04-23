@@ -8,4 +8,5 @@ file(GLOB SRC_FILES "*.cpp" CMAKE_CONFIGURE_DEPENDS)
 
 # Create the executable with all source files
 add_executable(main ${SRC_FILES})
-include_directories(include)
+target_include_directories(main PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+

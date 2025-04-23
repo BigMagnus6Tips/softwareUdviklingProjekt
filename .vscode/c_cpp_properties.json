@@ -3,7 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "/home/magne/softUdv/**",
+                "/home/magne/softUdv/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
