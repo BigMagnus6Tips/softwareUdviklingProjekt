@@ -7,7 +7,6 @@
 #include "include/menu.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
 
     menu m = menu();
     m.start();
