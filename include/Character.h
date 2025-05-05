@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-class character
+class Character
 {
 private:
     std::string name;
@@ -10,16 +10,16 @@ private:
     int maxHp;
 
 public:
-    character(/* args */);
-    character(std::string name, int maxhp, int styrke);
-    ~character();
+    Character(/* args */);
+    Character(std::string name, int maxhp, int styrke);
+    ~Character();
     std::string getName() const { return name; }
     int getHp() const { return hp; }
     int getStyrke() const { return styrke; }
     void setName(const std::string& newName) { name = newName; }
     void setHp(int newHp) { hp = newHp; }
     void setStyrke(int newStyrke) { styrke = newStyrke; }
-    int angrib(character& target);
+    int angrib(Character& target);
     void startKamp();
 };
 

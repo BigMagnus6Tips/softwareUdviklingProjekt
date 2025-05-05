@@ -1,24 +1,24 @@
-#include "include/menu.h"
-#include "character.h"
-#include "hero.h"
-#include "fjende.h"
-#include "kamp.h"
+#include "Menu.h"
+#include "Character.h"
+#include "Hero.h"
+#include "Fjende.h"
+#include "Kamp.h"
 #include <iostream>
 #include <string>
 #include <vector>
 
 // Constructor for menu class
-menu::menu(/* args */)
+Menu::Menu(/* args */)
 {
 }
 
-menu::~menu()
+Menu::~Menu()
 {
 }
 
 // Starts the game by loading enemies, choosing a hero, and displaying the menu
 // Prints a welcome message
-void menu::start()
+void Menu::start()
 {
     std::cout << "Velkommen til eventyret!" << std::endl;
     loadFjender();
@@ -28,7 +28,7 @@ void menu::start()
 
 // Displays the menu options for the player
 // Allows the player to start a battle or exit the game
-void menu::visMenu()
+void Menu::visMenu()
 {
     while (spiller.getHp() > 0)
     {
@@ -56,7 +56,7 @@ void menu::visMenu()
 
 // allows the player to chose an enemy to fight
 // the player has to choose an enemy
-void menu::vaelgKamp()
+void Menu::vaelgKamp()
 {
     std::cout << "Vælg fjende:" << std::endl;
     for (size_t i = 0; i < fjender.size(); i++)
@@ -71,52 +71,52 @@ void menu::vaelgKamp()
         vaelgKamp();
         return;
     }
-    fjende valgtFjende = fjender[valg - 1];
-    kamp kamp(spiller, valgtFjende);
+    Fjende valgtFjende = fjender[valg - 1];
+    Kamp kamp(spiller, valgtFjende);
     kamp.startKamp();
 }
 
 // loads the enemies
-void menu::loadFjender()
+void Menu::loadFjender()
 {
 
     // kan udbyttes med en database eller json fil
     // hero har 10 hp og 2 skade
-    fjender.push_back(fjende("Goblin", 15, 3, 500));
-    fjender.push_back(fjende("Ork", 25, 5, 800));
-    fjender.push_back(fjende("Drage", 40, 8, 1000));
-    fjender.push_back(fjende("Vampyr", 20, 4, 350));
-    fjender.push_back(fjende("Zombie", 12, 2, 150));
-    fjender.push_back(fjende("Trold", 30, 6, 700));
-    fjender.push_back(fjende("Spøgelse", 10, 1, 200));
-    fjender.push_back(fjende("Mumie", 35, 7, 900));
-    fjender.push_back(fjende("Varulv", 45, 9, 1100));
-    fjender.push_back(fjende("Skelet", 8, 2, 200));
+    fjender.push_back(Fjende("Goblin", 15, 3, 500));
+    fjender.push_back(Fjende("Ork", 25, 5, 800));
+    fjender.push_back(Fjende("Drage", 40, 8, 1000));
+    fjender.push_back(Fjende("Vampyr", 20, 4, 350));
+    fjender.push_back(Fjende("Zombie", 12, 2, 150));
+    fjender.push_back(Fjende("Trold", 30, 6, 700));
+    fjender.push_back(Fjende("Spøgelse", 10, 1, 200));
+    fjender.push_back(Fjende("Mumie", 35, 7, 900));
+    fjender.push_back(Fjende("Varulv", 45, 9, 1100));
+    fjender.push_back(Fjende("Skelet", 8, 2, 200));
 
 }
 
-// creates a new hero
+// creates a new Hero
 // the player has to enter a name
-void menu::newHero()
+void Menu::newHero()
 {
     std::string navn;
     int hp, styrke;
     std::cout << "Indtast din helts navn: ";
     std::cin >> navn;
 
-    spiller = hero(navn, 10, 2);
+    spiller = Hero(navn, 10, 2);
 }
 
 // loads a preloaded hero
 // the player has to choose a hero from a list
-void menu::loadHero()
+void Menu::loadHero()
 {
-    std::vector<hero> preloadedHeroes;
-    preloadedHeroes.push_back(hero("Tim den Store", 20, 6));
-    preloadedHeroes.push_back(hero("Mester Jacob", 12, 3));
-    preloadedHeroes.push_back(hero("Fantino den Majestætiske", 15, 3));
-    preloadedHeroes.push_back(hero("Bob fra smeden", 8, 1));
-    preloadedHeroes.push_back(hero("Lille Lars", 25, 1));
+    std::vector<Hero> preloadedHeroes;
+    preloadedHeroes.push_back(Hero("Tim den Store", 20, 6));
+    preloadedHeroes.push_back(Hero("Mester Jacob", 12, 3));
+    preloadedHeroes.push_back(Hero("Fantino den Majestætiske", 15, 3));
+    preloadedHeroes.push_back(Hero("Bob fra smeden", 8, 1));
+    preloadedHeroes.push_back(Hero("Lille Lars", 25, 1));
 
     std::cout << "Vælg en forudindlæst helt:" << std::endl;
     for (size_t i = 0; i < preloadedHeroes.size(); i++)
@@ -138,7 +138,7 @@ void menu::loadHero()
 }
 
 // allows the player to choose between creating a new hero or loading a preloaded hero
-void menu::vaelgHero()
+void Menu::vaelgHero()
 {
     std::cout << "Vil du lave en ny helt (1) eller vælge en forudindlæst helt (2)?" << std::endl;
     int valg;

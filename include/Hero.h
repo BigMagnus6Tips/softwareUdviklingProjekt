@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "character.h"
-class hero : public character
+#include "Character.h"
+class Hero : public Character
 {
 private:
     int level;
@@ -10,9 +10,9 @@ private:
     int maxExperience;
     
 public:
-    hero(/* args */);
-    hero(std::string name, int health, int attackPower);
-    ~hero();
+    Hero(/* args */);
+    Hero(std::string name, int health, int attackPower);
+    ~Hero();
     void levelUp();
     void printHero();
     void giveExperience(int exp);

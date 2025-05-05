@@ -1,19 +1,19 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "character.h"
-#include "hero.h"
-#include "fjende.h"
-class kamp
+#include "Character.h"
+#include "Hero.h"
+#include "Fjende.h"
+class Kamp
 {
 private:
-    hero& spiller;
-    fjende& modstander;
+    Hero& spiller;
+    Fjende& modstander;
     
 public:
-    kamp();
-    kamp(hero& spiller, fjende& modstander);
-    ~kamp();
+    Kamp();
+    Kamp(Hero& spiller, Fjende& modstander);
+    ~Kamp();
     void startKamp();
     void spillerAngrib();
     void fjendeAngrib();

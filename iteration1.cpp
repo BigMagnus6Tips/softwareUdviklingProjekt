@@ -1,14 +1,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "character.h"
-#include "fjende.h"
-#include "hero.h"
-#include "include/menu.h"
+#include "Character.h"
+#include "Fjende.h"
+#include "Hero.h"
+#include "Menu.h"
 
 int main() {
 
-    menu m = menu();
+    Menu m = Menu();
     m.start();
 
 }

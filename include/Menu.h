@@ -1,20 +1,20 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "character.h"
-#include "hero.h"
-#include "fjende.h"
-#include "kamp.h"
-class menu
+#include "Character.h"
+#include "Hero.h"
+#include "Fjende.h"
+#include "Kamp.h"
+class Menu
 {
 private:
     /* data */
-    hero spiller;
-    std::vector<fjende> fjender;
+    Hero spiller;
+    std::vector<Fjende> fjender;
 
 public:
-    menu(/* args */);
-    ~menu();
+    Menu(/* args */);
+    ~Menu();
     void start();
     void visMenu();
     void vaelgKamp();

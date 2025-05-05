@@ -1,26 +1,26 @@
-#include "hero.h"
+#include "Hero.h"
 #include <iostream>
 #include <string>
 #include <vector>
-#include "character.h"
+#include "Character.h"
 
-hero::hero(/* args */)
+Hero::Hero(/* args */)
 {
 }
 
-// Constructor for hero class
+// Constructor for Hero class
 // Initializes the hero with a name, health, and attack power
-hero::hero(std::string name, int health, int attackPower) : character(name, health, attackPower), level(1), experience(0), maxExperience(1000)
+Hero::Hero(std::string name, int health, int attackPower) : Character(name, health, attackPower), level(1), experience(0), maxExperience(1000)
 {
 }
 
-hero::~hero()
+Hero::~Hero()
 {
 }
 
 // Increases the hero's level, health, and attack power
 // Prints a message indicating the hero has leveled up
-void hero::levelUp()
+void Hero::levelUp()
 {
     level++;
     setHp(getHp() + 20);
@@ -31,7 +31,7 @@ void hero::levelUp()
 
 // Prints the hero's name, level, health, strength, and experience
 // Displays the current experience and maximum experience required for the next level
-void hero::printHero()
+void Hero::printHero()
 {
     std::cout << "Navn: " << getName() << std::endl;
     std::cout << "Niveau: " << level << std::endl;
@@ -42,7 +42,7 @@ void hero::printHero()
 
 // Increases the hero's experience by a specified amount
 // If the experience exceeds the maximum, the hero levels up
-void hero::giveExperience(int exp)
+void Hero::giveExperience(int exp)
 {
     experience += exp;
     std::cout << getName() << " har modtaget " << exp << " erfaring!" << std::endl;

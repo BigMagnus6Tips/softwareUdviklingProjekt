@@ -1,20 +1,20 @@
-#include "include/kamp.h"
-#include "include/character.h"
-#include "include/hero.h"
-#include "include/fjende.h"
+#include "Kamp.h"
+#include "Character.h"
+#include "Hero.h"
+#include "Fjende.h"
 #include <iostream>
 #include <string>
 
 
 
 
-kamp::~kamp()
+Kamp::~Kamp()
 {
 }
 
-// Constructor for the kamp class
+// Constructor for the Kamp class
 // Initializes the player and enemy characters
-kamp::kamp(hero& spiller, fjende& modstander) : spiller(spiller), modstander(modstander)
+Kamp::Kamp(Hero& spiller, Fjende& modstander) : spiller(spiller), modstander(modstander)
 {
 }
 
@@ -22,7 +22,7 @@ kamp::kamp(hero& spiller, fjende& modstander) : spiller(spiller), modstander(mod
 // Displays a message indicating the battle has started
 // Player and enemy take turns attacking each other
 // The battle continues until one of them is dead
-void kamp::startKamp()
+void Kamp::startKamp()
 {
     std::cout << "Kamp starter!" << std::endl;
     spiller.startKamp();
@@ -46,7 +46,7 @@ void kamp::startKamp()
 
 // The player attacks the enemy
 // Displays a message indicating the player is attacking
-void kamp::spillerAngrib()
+void Kamp::spillerAngrib()
 {
     std::cout << spiller.getName() << " angriber " << modstander.getName() << "!" << std::endl;
     if (spiller.angrib(modstander) <= 0) 
@@ -58,7 +58,7 @@ void kamp::spillerAngrib()
 
 // The enemy attacks the player
 // Displays a message indicating the enemy is attacking
-void kamp::fjendeAngrib()
+void Kamp::fjendeAngrib()
 {
     std::cout << modstander.getName() << " angriber " << spiller.getName() << "!" << std::endl;
     if (modstander.angrib(spiller)<= 0) 
@@ -70,7 +70,7 @@ void kamp::fjendeAngrib()
 
 // Displays the status of both the player and the enemy
 // Shows their names and current health points
-void kamp::visStatus()
+void Kamp::visStatus()
 {
     std::cout << spiller.getName() << " HP: " << spiller.getHp() << std::endl;
     std::cout << modstander.getName() << " HP: " << modstander.getHp() << std::endl;
@@ -79,7 +79,7 @@ void kamp::visStatus()
 // Ends the battle and checks if the player or enemy is dead
 // If the player wins, they gain experience
 // If the enemy wins, the player is dead
-void kamp::slutKamp()
+void Kamp::slutKamp()
 {
     if (spiller.getHp() <= 0)
     {

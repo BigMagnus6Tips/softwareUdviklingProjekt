@@ -1,17 +1,17 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "character.h"
-class fjende : public character
+#include "Character.h"
+class Fjende : public Character
 {
 private:
     /* data */
     int experienceGiven;
 
 public:
-    fjende(/* args */);
-    fjende(std::string name, int health, int attackPower, int experienceGiven);
-    ~fjende();
+    Fjende(/* args */);
+    Fjende(std::string name, int health, int attackPower, int experienceGiven);
+    ~Fjende();
     int getExperienceGiven() const { return experienceGiven; }
 };
 
