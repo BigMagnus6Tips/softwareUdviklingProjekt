@@ -46,7 +46,7 @@ void Hero::giveExperience(int exp)
 {
     experience += exp;
     std::cout << getName() << " har modtaget " << exp << " erfaring!" << std::endl;
-    if (experience >= maxExperience)
+    if (experience >= maxExperience * level)
     {
         levelUp();
         experience -= maxExperience; // Reset experience after leveling up

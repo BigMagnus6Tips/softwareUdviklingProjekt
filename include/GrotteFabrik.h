@@ -3,6 +3,8 @@
 #include <vector>
 #include "Fjende.h"
 #include "Grotte.h"
+#include <cstdlib>
+#include <vector>
 
 class GrotteFabrik
 {
@@ -22,11 +24,11 @@ public:
     ~GrotteFabrik();
 
     // Method to create a random Grotte
-    void bygTilfældigGrotte(std::string navn, int grotteId, int grotteLevel, int grotteType, int grotteSize);
+    void bygTilfældigGrotte(std::string navn, int grotteId, int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender);
     Grotte getGrotte() const { return grotte; }
 
     // Method to create a Grotte with specific parameters
-    void bygGrotte(std::string navn, int grotteId, int grotteLevel, int grotteType, int grotteSize);
+    void bygGrotte(std::string navn, int grotteId, int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender);
     void tilfojFjende(Fjende fjende);
     void setGrotteGuld(int guld) { grotteGuld = guld; }
     void visFjender() const;

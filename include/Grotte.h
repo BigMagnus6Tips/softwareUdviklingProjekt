@@ -31,7 +31,7 @@ public:
     // For fighting
     Fjende getFjendeVed(int index) const { return fjender.at(index); }
     Fjende getForsteFjende() const { return fjender.at(0); }
-    int getFjender() const { return fjender.size(); }
+    int getAntalFjender() const { return fjender.size(); }
     void VisGrotteInfo() const;
 
 };

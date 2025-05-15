@@ -13,5 +13,6 @@ public:
     Fjende(std::string name, int health, int attackPower, int experienceGiven);
     ~Fjende();
     int getExperienceGiven() const { return experienceGiven; }
+    void changeAttackPower(int newAttackPower);
 };
 
