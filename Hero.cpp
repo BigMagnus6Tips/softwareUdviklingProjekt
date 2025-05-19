@@ -23,8 +23,8 @@ Hero::~Hero()
 void Hero::levelUp()
 {
     level++;
-    setHp(getHp() + 20);
-    setStyrke(getStyrke() + 5);
+    setHp(getHp() + 2);
+    setStyrke(getStyrke() + 1);
     std::cout << getName() << " er steget til niveau " << level << "!" << std::endl;
     
 }

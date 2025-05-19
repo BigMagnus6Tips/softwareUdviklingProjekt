@@ -42,10 +42,23 @@ void GrotteFabrik::bygTilfældigGrotte(std::string navn, int grotteId, int grott
     for (int i = 0; i < grotteSize + rand() % 5 - 2; i++)
     {
         int randomIndex = rand() % fjender.size();
-        grotte.tilfojFjende(fjender[randomIndex]);
-        
+        Fjende fjende = fjender[randomIndex];
 
+        // Set the enemy's health and attack power based on the Grotte's level
+        // A hero of equal level will have a 100% chance to defeat the enemy
+
+        int fjendeHealth = fjende.getLiv();
+        int fjendeAttackPower = fjende.getStyrke();
+        int playerhealth = 10 + (grotteLevel * 2);
+        int playerattackpower = 5 + (grotteLevel * 1);
+        // insure the enemy is not stronger than the player
+        int newAttackPower = playerhealth * fjendeAttackPower / playerattackpower;
+        fjende.changeAttackPower(newAttackPower);
+
+        grotte.tilfojFjende(fjende);
     }
 
     
 }
+
+

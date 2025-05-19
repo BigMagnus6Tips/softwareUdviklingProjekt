@@ -14,5 +14,9 @@ public:
     ~Fjende();
     int getExperienceGiven() const { return experienceGiven; }
     void changeAttackPower(int newAttackPower);
+    int getLiv() const { return getHp(); }
+    int getStyrke() const { return getStyrke(); }
+    void setLiv(int liv) { setHp(liv); }
+    void setStyrke(int styrke) { setStyrke(styrke); }
 };
 
