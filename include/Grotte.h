@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Fjende.h"
+#include "Hero.h"
 
 class Grotte
 {
@@ -33,7 +34,8 @@ public:
     Fjende getForsteFjende() const { return fjender.at(0); }
     int getAntalFjender() const { return fjender.size(); }
     void VisGrotteInfo() const;
-
+    void udfordreGrotte(Hero& spiller);
+    
 };
 
 

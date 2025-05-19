@@ -2,6 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "Fjende.h"
+#include "Hero.h"
+#include "Kamp.h"
 
 Grotte::Grotte(/* args */)
 {
@@ -53,4 +56,37 @@ void Grotte::setGrotteGuld(int guld)
 void Grotte::tilfojFjende(Fjende fjende)
 {
     fjender.push_back(fjende);
+}
+
+void Grotte::udfordreGrotte(Hero& spiller)
+{
+    std::cout << "Du udfordrer grotten: " << navn << std::endl;
+    std::cout << "Der er " << fjender.size() << " fjender i grotten." << std::endl;
+    for (size_t i = 0; i < fjender.size(); i++)
+    {
+        std::cout << "Den " << i + 1 << ". fjende er: " << fjender[i].getName() << std::endl;
+
+        Kamp kamp(spiller, fjender[i]);
+        kamp.startKamp();
+        
+        if (spiller.getHp() > 0)
+        {
+            std::cout << "Du besejrede den " << i + 1 << ". fjende!" << std::endl;
+            std::cout << "Du mangler " << fjender.size() - i - 1 << " fjender." << std::endl;
+            
+        }
+        else 
+        {
+            std::cout << "Du er død!" << std::endl;
+            std::cout << "Spillet er slut." << std::endl;
+            return;
+        }
+
+    }
+
+    std::cout << "Du har besejret grotten" << std::endl;
+    std::cout << "Du får " << grotteGuld << " guld" << std::endl;
+
+    return;
+
 }
