@@ -63,5 +63,5 @@ void Fjende::changeAttackPower(int newAttackPower)
             setName("Svag " + getName());
         }
         break;
-    
+    }
 }

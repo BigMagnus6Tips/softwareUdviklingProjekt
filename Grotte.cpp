@@ -29,34 +29,6 @@ void Grotte::VisGrotteInfo() const
     std::cout << "Grotte Størrelse: " << (grotteSize == 0 ? "Lille" : (grotteSize == 1 ? "Medium" : "Stor")) << std::endl;
     std::cout << "Guld i Grotte: " << grotteGuld << std::endl;
 }
-void Grotte::setNavn(const std::string& newNavn)
-{
-    navn = newNavn;
-}
-void Grotte::setGrotteId(int id)
-{
-    grotteId = id;
-}
-void Grotte::setGrotteLevel(int level)
-{
-    grotteLevel = level;
-}
-void Grotte::setGrotteType(int type)
-{
-    grotteType = type;
-}
-void Grotte::setGrotteSize(int size)
-{
-    grotteSize = size;
-}
-void Grotte::setGrotteGuld(int guld)
-{
-    grotteGuld = guld;
-}
-void Grotte::tilfojFjende(Fjende fjende)
-{
-    fjender.push_back(fjende);
-}
 
 void Grotte::udfordreGrotte(Hero& spiller)
 {
