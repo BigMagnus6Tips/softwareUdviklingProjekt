@@ -3,9 +3,12 @@
 #include "Hero.h"
 #include "Fjende.h"
 #include "Kamp.h"
+#include "Grotte.h"
+#include "GrotteFabrik.h"
 #include <iostream>
 #include <string>
 #include <vector>
+
 
 // Constructor for menu class
 Menu::Menu(/* args */)
@@ -34,7 +37,8 @@ void Menu::visMenu()
     {
         std::cout << "Vælg en mulighed:" << std::endl;
         std::cout << "1. Start kamp" << std::endl;
-        std::cout << "2. Afslut" << std::endl;
+        std::cout << "2. Udfordre en grotte" << std::endl;
+        std::cout << "3. Afslut" << std::endl;
         int valg;
         std::cin >> valg;
         switch (valg)
@@ -43,6 +47,9 @@ void Menu::visMenu()
             vaelgKamp();
             break;
         case 2:
+            udfordreGrotte();
+            break;
+        case 3:
             std::cout << "Farvel!" << std::endl;
             return;
         default:
@@ -156,4 +163,13 @@ void Menu::vaelgHero()
         vaelgHero();
         break;
     }
+}
+
+void Menu::udfordreGrotte()
+{
+    std::cout << "Vælg en grotte:" << std::endl;
+    Grotte grotte1 = grotteFabrik.bygTilfældigGrotte(spiller.getLevel(), 1, 0, fjender);
+
+
+
 }

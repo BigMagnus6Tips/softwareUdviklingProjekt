@@ -20,7 +20,7 @@ public:
     ~Grotte();
 
     // Constructor
-    Grotte(std::string navn, int grotteId, int grotteLevel, int grotteType, int grotteSize);
+    Grotte(std::string navn, int grotteLevel, int grotteType, int grotteSize);
     void tilfojFjende(Fjende fjende) { fjender.push_back(fjende); }
     void setGrotteGuld(int guld) { grotteGuld = guld; }
     void setGrotteId(int id) { grotteId = id; }

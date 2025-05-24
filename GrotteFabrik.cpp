@@ -17,10 +17,14 @@ GrotteFabrik::~GrotteFabrik()
 
 // Method to create a random Grotte
 
-void GrotteFabrik::bygTilfældigGrotte(std::string navn, int grotteId, int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender)
+void GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender)
 {
+    std::string navn;
+    // Generate a random name for the Grotte
+    navn = "Den " + randomPrefixNames[rand() % 10] + " " + randomSuffixNames[rand() % 10];
+
     // Create a random Grotte with the given parameters
-    this->grotte = Grotte(navn, grotteId, grotteLevel, grotteType, grotteSize);
+    this->grotte = Grotte(navn, grotteLevel, grotteType, grotteSize);
     // Set the Grotte's gold amount based on its size
     switch (grotteSize)
     {

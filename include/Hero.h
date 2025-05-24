@@ -16,6 +16,7 @@ public:
     void levelUp();
     void printHero();
     void giveExperience(int exp);
+    int getLevel() const { return level; }
 };
 
 

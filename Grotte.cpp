@@ -14,7 +14,7 @@ Grotte::~Grotte()
 {
 }
 
-Grotte::Grotte(std::string navn, int grotteId, int grotteLevel, int grotteType, int grotteSize) : navn(navn), grotteId(grotteId), grotteLevel(grotteLevel), grotteType(grotteType), grotteSize(grotteSize)
+Grotte::Grotte(std::string navn, int grotteLevel, int grotteType, int grotteSize) : navn(navn), grotteId(grotteId), grotteLevel(grotteLevel), grotteType(grotteType), grotteSize(grotteSize)
 {
     // Initialize the Grotte object with the given parameters
     this->grotteGuld = 0; // Default value for gold
