@@ -6,6 +6,7 @@
 #include "Fjende.h"
 #include <cstdlib>
 #include <vector>
+#include <chrono>
 
 GrotteFabrik::GrotteFabrik(/* args */)
 {
@@ -19,6 +20,9 @@ GrotteFabrik::~GrotteFabrik()
 
 Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender)
 {
+    srand(time(0) + grotteSize + grotteLevel); // Seed the random number generator with the current time
+
+
     std::string navn;
     // Generate a random name for the Grotte
     navn = "Den " + randomPrefixNames[rand() % 10] + " " + randomSuffixNames[rand() % 10];
@@ -28,47 +32,25 @@ Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int gr
     // Create a random Grotte with the given parameters
     this->grotte = Grotte(navn, grotteLevel, grotteType, grotteSize);
     // Set the Grotte's gold amount based on its size
-    switch (grotteSize)
-    {
-    case 0: // small
-        grotte.setGrotteGuld(rand() % 100 + 50); // Random gold between 50 and 150
-        break;
-    case 1: // medium
-        grotte.setGrotteGuld(rand() % 200 + 100); // Random gold between 100 and 300
-        break;
-    case 2: // large
-        grotte.setGrotteGuld(rand() % 500 + 200); // Random gold between 200 and 700
-        break;
-    default:
-        std::cout << "Ugyldig grotte størrelse!" << std::endl;
-        break;
-    }
-    std::cout << "Grotte navn: " << navn << std::endl;
+    grotte.setGrotteGuld(grotteSize * 10 + grotteLevel * 5 + rand() % 200); // Example: gold increases with size and level
 
     // Add random enemies to the Grotte
     for (int i = 0; i < grotteSize + rand() % 5; i++)
     {
-        std::cout << "Number of enemies: " << fjender.size() << std::endl;
 
         int randomIndex = rand() % fjender.size();
         Fjende fjende = fjender.at(randomIndex);
-        std::cout << "Tilføjer fjende: " << fjende.getName() << " til grotten." << std::endl;
         // Set the enemy's health and attack power based on the Grotte's level
         // A hero of equal level will have a 100% chance to defeat the enemy
 
         int fjendeHealth = fjende.getLiv();
-        std::cout << "Fjende health: " << fjendeHealth << std::endl;
         int fjendeAttackPower = fjende.getStyrke();
-        std::cout << "Fjende attack power: " << fjendeAttackPower << std::endl;
         int playerhealth = 10 + (grotteLevel * 2);
-        std::cout << "Player health: " << playerhealth << std::endl;
         int playerattackpower = 5 + (grotteLevel * 1);
-        std::cout << "Player attack power: " << playerattackpower << std::endl;
         // insure the enemy is not stronger than the player
         int newAttackPower = playerhealth * fjendeAttackPower / playerattackpower;
-        std::cout << "New attack power: " << newAttackPower << std::endl;
         fjende.changeAttackPower(newAttackPower);
-        
+
         grotte.tilfojFjende(fjende);
     }
 

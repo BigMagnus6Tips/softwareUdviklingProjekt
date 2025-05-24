@@ -171,9 +171,9 @@ void Menu::udfordreGrotte()
     Grotte grotte1 = grotteFabrik.bygTilfældigGrotte(spiller.getLevel(), 0, 1, fjender);
     Grotte grotte2 = grotteFabrik.bygTilfældigGrotte(spiller.getLevel(), 0, 3, fjender);
     Grotte grotte3 = grotteFabrik.bygTilfældigGrotte(spiller.getLevel(), 0, 6, fjender);
-    std::cout << "1. " << grotte1.getNavn() << std::endl;
-    std::cout << "2. " << grotte2.getNavn() << std::endl;
-    std::cout << "3. " << grotte3.getNavn() << std::endl;
+    std::cout << "1. " << grotte1.getNavn() << " (" << grotte1.getGrotteGuld() << " guld)" << std::endl;
+    std::cout << "2. " << grotte2.getNavn() << " (" << grotte2.getGrotteGuld() << " guld)" << std::endl;
+    std::cout << "3. " << grotte3.getNavn() << " (" << grotte3.getGrotteGuld() << " guld)" << std::endl;
     int valg;
     std::cin >> valg;
     Grotte valgtGrotte;

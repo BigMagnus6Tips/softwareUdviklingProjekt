@@ -29,6 +29,7 @@ public:
     void setGrotteSize(int size) { grotteSize = size; }
     void setNavn(const std::string& newNavn) { navn = newNavn; }
     std::string getNavn() const { return navn; }
+    int getGrotteGuld() const { return grotteGuld; }
 
     // For fighting
     Fjende getFjendeVed(int index) const { return fjender.at(index); }
