@@ -52,3 +52,10 @@ void Hero::giveExperience(int exp)
         experience -= maxExperience; // Reset experience after leveling up
     }
 }
+
+void Hero::giveGold(int guld)
+{
+    std::cout << getName() << " har modtaget " << guld << " guld!" << std::endl;
+    gold += guld;
+    std::cout << "Total guld: " << gold << std::endl;
+}

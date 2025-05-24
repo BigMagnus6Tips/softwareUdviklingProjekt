@@ -21,24 +21,22 @@ private:
     // Factory method to create a Grotte
 
     // Array of random prefix names for the Grotte
-    std::string randomPrefixNames[10] = { "Mystiske", "Skjulte", "Gammle", "Forladte", "Udfordrende", "dødbringende", "mørke", "farlige", "magiske", "fortryllede" };
+    std::string randomPrefixNames[10] = {"Mystiske", "Skjulte", "Gammle", "Forladte", "Udfordrende", "dødbringende", "mørke", "farlige", "magiske", "fortryllede"};
 
     // Array of random suffix names for the Grotte
-    std::string randomSuffixNames[10] = { "Hule", "Grotte", "Ruin", "Labyrint", "Krypt", "Grav", "Borg", "Tempel", "Bunker", "Helligdom" };
+    std::string randomSuffixNames[10] = {"Hule", "Grotte", "Ruin", "Labyrint", "Krypt", "Grav", "Borg", "Tempel", "Bunker", "Helligdom"};
 
 public:
     GrotteFabrik(/* args */);
     ~GrotteFabrik();
 
     // Method to create a random Grotte
-    Grotte bygTilfældigGrotte(int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender);
+    Grotte bygTilfældigGrotte(int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende> &fjender);
     Grotte getGrotte() const { return grotte; }
 
     // Method to create a Grotte with specific parameters
-    void bygGrotte(std::string navn, int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender);
+    void bygGrotte(std::string navn, int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende> &fjender);
     void tilfojFjende(Fjende fjende);
     void setGrotteGuld(int guld) { grotteGuld = guld; }
     void visFjender() const;
 };
-
-

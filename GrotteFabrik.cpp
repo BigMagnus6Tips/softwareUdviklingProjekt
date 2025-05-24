@@ -18,16 +18,13 @@ GrotteFabrik::~GrotteFabrik()
 
 // Method to create a random Grotte
 
-Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender)
+Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende> &fjender)
 {
     srand(time(0) + grotteSize + grotteLevel); // Seed the random number generator with the current time
-
 
     std::string navn;
     // Generate a random name for the Grotte
     navn = "Den " + randomPrefixNames[rand() % 10] + " " + randomSuffixNames[rand() % 10];
-    
-
 
     // Create a random Grotte with the given parameters
     this->grotte = Grotte(navn, grotteLevel, grotteType, grotteSize);
@@ -45,10 +42,10 @@ Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int gr
 
         int fjendeHealth = fjende.getLiv();
         int fjendeAttackPower = fjende.getStyrke();
-        int playerhealth = 10 + (grotteLevel * 2);
-        int playerattackpower = 5 + (grotteLevel * 1);
+        int playerhealth = 10 + ((grotteLevel-1) * 2);
+        int playerattackpower = 2 + ((grotteLevel-1) * 1);
         // insure the enemy is not stronger than the player
-        int newAttackPower = playerhealth * fjendeAttackPower / playerattackpower;
+        int newAttackPower = playerattackpower * playerhealth / fjendeHealth - 1;
         fjende.changeAttackPower(newAttackPower);
 
         grotte.tilfojFjende(fjende);
@@ -56,5 +53,3 @@ Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int gr
 
     return grotte;
 }
-
-

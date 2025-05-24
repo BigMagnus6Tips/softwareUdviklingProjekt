@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-
 // Constructor for menu class
 Menu::Menu(/* args */)
 {
@@ -58,7 +57,6 @@ void Menu::visMenu()
         }
     }
     std::cout << "Du er død! Spillet er slut." << std::endl;
-    
 }
 
 // allows the player to chose an enemy to fight
@@ -99,7 +97,6 @@ void Menu::loadFjender()
     fjender.push_back(Fjende("Mumie", 35, 7, 900));
     fjender.push_back(Fjende("Varulv", 45, 9, 1100));
     fjender.push_back(Fjende("Skelet", 8, 2, 200));
-
 }
 
 // creates a new Hero
@@ -194,5 +191,5 @@ void Menu::udfordreGrotte()
         return;
     }
 
-
+    valgtGrotte.udfordreGrotte(spiller);
 }

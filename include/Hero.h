@@ -8,6 +8,7 @@ private:
     int level;
     int experience;
     int maxExperience;
+    int gold = 0; // Initialize gold to 0
     
 public:
     Hero(/* args */);
@@ -17,6 +18,7 @@ public:
     void printHero();
     void giveExperience(int exp);
     int getLevel() const { return level; }
+    void giveGold(int guld);
 };
 
 

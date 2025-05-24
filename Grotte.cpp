@@ -30,7 +30,7 @@ void Grotte::VisGrotteInfo() const
     std::cout << "Guld i Grotte: " << grotteGuld << std::endl;
 }
 
-void Grotte::udfordreGrotte(Hero& spiller)
+void Grotte::udfordreGrotte(Hero &spiller)
 {
     std::cout << "Du udfordrer grotten: " << navn << std::endl;
     std::cout << "Der er " << fjender.size() << " fjender i grotten." << std::endl;
@@ -40,25 +40,22 @@ void Grotte::udfordreGrotte(Hero& spiller)
 
         Kamp kamp(spiller, fjender[i]);
         kamp.startKamp();
-        
+
         if (spiller.getHp() > 0)
         {
             std::cout << "Du besejrede den " << i + 1 << ". fjende!" << std::endl;
             std::cout << "Du mangler " << fjender.size() - i - 1 << " fjender." << std::endl;
-            
         }
-        else 
+        else
         {
             std::cout << "Du er død!" << std::endl;
             std::cout << "Spillet er slut." << std::endl;
             return;
         }
-
     }
 
     std::cout << "Du har besejret grotten" << std::endl;
     std::cout << "Du får " << grotteGuld << " guld" << std::endl;
-
+    spiller.giveGold(grotteGuld);
     return;
-
 }

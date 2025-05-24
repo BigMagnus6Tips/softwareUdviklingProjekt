@@ -16,11 +16,9 @@ public:
     std::string getName() const { return name; }
     int getHp() const { return hp; }
     int getStyrke() const { return styrke; }
-    void setName(const std::string& newName) { name = newName; }
+    void setName(const std::string &newName) { name = newName; }
     void setHp(int newHp) { hp = newHp; }
     void setStyrke(int newStyrke) { styrke = newStyrke; }
-    int angrib(Character& target);
+    int angrib(Character &target);
     void startKamp();
 };
-
-

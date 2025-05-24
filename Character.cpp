@@ -18,7 +18,7 @@ Character::~Character()
 
 // Attacks the target character and reduces its health by the attacker's strength
 // Returns the target's remaining health
-int Character::angrib(Character& target)
+int Character::angrib(Character &target)
 {
     target.setHp(target.getHp() - this->styrke);
     return target.getHp();

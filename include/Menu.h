@@ -26,7 +26,4 @@ public:
     void newHero();
     void loadHero();
     void udfordreGrotte();
-
-
 };
-

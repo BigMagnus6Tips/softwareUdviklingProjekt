@@ -17,6 +17,5 @@ public:
     int getLiv() const { return getHp(); }
     int getStyrke() const { return styrke; }
     void setLiv(int liv) { setHp(liv); }
-    void setStyrke(int styrke) { styrke; }
+    void setStyrke(int s) { styrke = s; }
 };
-
