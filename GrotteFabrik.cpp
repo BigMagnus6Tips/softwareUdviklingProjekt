@@ -17,11 +17,13 @@ GrotteFabrik::~GrotteFabrik()
 
 // Method to create a random Grotte
 
-void GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender)
+Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int grotteSize, std::vector<Fjende>& fjender)
 {
     std::string navn;
     // Generate a random name for the Grotte
     navn = "Den " + randomPrefixNames[rand() % 10] + " " + randomSuffixNames[rand() % 10];
+    
+
 
     // Create a random Grotte with the given parameters
     this->grotte = Grotte(navn, grotteLevel, grotteType, grotteSize);
@@ -41,28 +43,36 @@ void GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int grot
         std::cout << "Ugyldig grotte størrelse!" << std::endl;
         break;
     }
+    std::cout << "Grotte navn: " << navn << std::endl;
 
     // Add random enemies to the Grotte
-    for (int i = 0; i < grotteSize + rand() % 5 - 2; i++)
+    for (int i = 0; i < grotteSize + rand() % 5; i++)
     {
-        int randomIndex = rand() % fjender.size();
-        Fjende fjende = fjender[randomIndex];
+        std::cout << "Number of enemies: " << fjender.size() << std::endl;
 
+        int randomIndex = rand() % fjender.size();
+        Fjende fjende = fjender.at(randomIndex);
+        std::cout << "Tilføjer fjende: " << fjende.getName() << " til grotten." << std::endl;
         // Set the enemy's health and attack power based on the Grotte's level
         // A hero of equal level will have a 100% chance to defeat the enemy
 
         int fjendeHealth = fjende.getLiv();
+        std::cout << "Fjende health: " << fjendeHealth << std::endl;
         int fjendeAttackPower = fjende.getStyrke();
+        std::cout << "Fjende attack power: " << fjendeAttackPower << std::endl;
         int playerhealth = 10 + (grotteLevel * 2);
+        std::cout << "Player health: " << playerhealth << std::endl;
         int playerattackpower = 5 + (grotteLevel * 1);
+        std::cout << "Player attack power: " << playerattackpower << std::endl;
         // insure the enemy is not stronger than the player
         int newAttackPower = playerhealth * fjendeAttackPower / playerattackpower;
+        std::cout << "New attack power: " << newAttackPower << std::endl;
         fjende.changeAttackPower(newAttackPower);
-
+        
         grotte.tilfojFjende(fjende);
     }
 
-    
+    return grotte;
 }
 
 

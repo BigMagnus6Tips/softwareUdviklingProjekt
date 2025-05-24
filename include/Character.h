@@ -3,7 +3,7 @@
 #include <vector>
 class Character
 {
-private:
+protected:
     std::string name;
     int hp;
     int styrke;

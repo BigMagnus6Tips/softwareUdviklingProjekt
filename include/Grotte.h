@@ -28,6 +28,7 @@ public:
     void setGrotteType(int type) { grotteType = type; }
     void setGrotteSize(int size) { grotteSize = size; }
     void setNavn(const std::string& newNavn) { navn = newNavn; }
+    std::string getNavn() const { return navn; }
 
     // For fighting
     Fjende getFjendeVed(int index) const { return fjender.at(index); }

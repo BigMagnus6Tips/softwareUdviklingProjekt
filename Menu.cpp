@@ -168,8 +168,31 @@ void Menu::vaelgHero()
 void Menu::udfordreGrotte()
 {
     std::cout << "Vælg en grotte:" << std::endl;
-    Grotte grotte1 = grotteFabrik.bygTilfældigGrotte(spiller.getLevel(), 1, 0, fjender);
-
+    Grotte grotte1 = grotteFabrik.bygTilfældigGrotte(spiller.getLevel(), 0, 1, fjender);
+    Grotte grotte2 = grotteFabrik.bygTilfældigGrotte(spiller.getLevel(), 0, 3, fjender);
+    Grotte grotte3 = grotteFabrik.bygTilfældigGrotte(spiller.getLevel(), 0, 6, fjender);
+    std::cout << "1. " << grotte1.getNavn() << std::endl;
+    std::cout << "2. " << grotte2.getNavn() << std::endl;
+    std::cout << "3. " << grotte3.getNavn() << std::endl;
+    int valg;
+    std::cin >> valg;
+    Grotte valgtGrotte;
+    switch (valg)
+    {
+    case 1:
+        valgtGrotte = grotte1;
+        break;
+    case 2:
+        valgtGrotte = grotte2;
+        break;
+    case 3:
+        valgtGrotte = grotte3;
+        break;
+    default:
+        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+        udfordreGrotte();
+        return;
+    }
 
 
 }

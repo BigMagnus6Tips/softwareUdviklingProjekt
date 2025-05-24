@@ -15,8 +15,8 @@ public:
     int getExperienceGiven() const { return experienceGiven; }
     void changeAttackPower(int newAttackPower);
     int getLiv() const { return getHp(); }
-    int getStyrke() const { return getStyrke(); }
+    int getStyrke() const { return styrke; }
     void setLiv(int liv) { setHp(liv); }
-    void setStyrke(int styrke) { setStyrke(styrke); }
+    void setStyrke(int styrke) { styrke; }
 };
 
