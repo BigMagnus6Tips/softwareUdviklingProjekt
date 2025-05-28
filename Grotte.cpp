@@ -22,21 +22,30 @@ Grotte::Grotte(std::string navn, int grotteLevel, int grotteType, int grotteSize
 
 void Grotte::VisGrotteInfo() const
 {
-    std::cout << "Grotte Navn: " << navn << std::endl;
-    std::cout << "Grotte ID: " << grotteId << std::endl;
-    std::cout << "Grotte Level: " << grotteLevel << std::endl;
-    std::cout << "Grotte Type: " << (grotteType == 0 ? "Normal" : "Boss") << std::endl;
-    std::cout << "Grotte Størrelse: " << (grotteSize == 0 ? "Lille" : (grotteSize == 1 ? "Medium" : "Stor")) << std::endl;
-    std::cout << "Guld i Grotte: " << grotteGuld << std::endl;
+    std::cout << navn << " har " << fjender.size() << " fjender." << std::endl;
+    for (size_t i = 0; i < fjender.size(); i++)
+    {
+        std::cout << "Fjende " << i + 1 << ": " << fjender[i].getName() << std::endl;
+        std::cout << "Liv: " << fjender[i].getLiv() << ", Styrke: " << fjender[i].getStyrke() << std::endl;
+    }
+    
 }
 
 void Grotte::udfordreGrotte(Hero &spiller)
 {
     std::cout << "Du udfordrer grotten: " << navn << std::endl;
-    std::cout << "Der er " << fjender.size() << " fjender i grotten." << std::endl;
+
+    VisGrotteInfo();
+
+
     for (size_t i = 0; i < fjender.size(); i++)
     {
         std::cout << "Den " << i + 1 << ". fjende er: " << fjender[i].getName() << std::endl;
+
+        std::cout << "er du klar til at kæmpe? (tryk): " << std::endl;
+        char tryk;
+        std::cin >> tryk;
+
 
         Kamp kamp(spiller, fjender[i]);
         kamp.startKamp();

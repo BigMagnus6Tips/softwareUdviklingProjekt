@@ -15,9 +15,11 @@ public:
     ~Character();
     std::string getName() const { return name; }
     int getHp() const { return hp; }
+    int getMaxHp() const { return maxHp; }
     int getStyrke() const { return styrke; }
     void setName(const std::string &newName) { name = newName; }
     void setHp(int newHp) { hp = newHp; }
+    void setMaxHp(int newMaxHp) { maxHp = newMaxHp; }
     void setStyrke(int newStyrke) { styrke = newStyrke; }
     int angrib(Character &target);
     void startKamp();

@@ -13,6 +13,8 @@ private:
 public:
     Hero(/* args */);
     Hero(std::string name, int health, int attackPower);
+    Hero(std::string name, int health, int attackPower, int level, int experience, int maxExperience)
+        : Character(name, health, attackPower), level(level), experience(experience), maxExperience(maxExperience) {}
     ~Hero();
     void levelUp();
     void printHero();

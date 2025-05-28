@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <limits>
 
 // Constructor for menu class
 Menu::Menu(/* args */)
@@ -40,6 +41,16 @@ void Menu::visMenu()
         std::cout << "3. Afslut" << std::endl;
         int valg;
         std::cin >> valg;
+
+        // Check if input is valid
+        if (std::cin.fail() || valg < 1 || valg > 3)
+        {
+            std::cin.clear();                                                   // Clear the input stream
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+            std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+            continue; // Skip to the next iteration of the loop
+        }
+
         switch (valg)
         {
         case 1:
@@ -70,15 +81,30 @@ void Menu::vaelgKamp()
     }
     int valg;
     std::cin >> valg;
-    if (valg < 1 || valg > fjender.size())
+
+    while (true)
     {
-        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
-        vaelgKamp();
+
+        // Check if input is valid
+        if (std::cin.fail() || valg < 1 || valg > 3)
+        {
+            std::cin.clear();                                                   // Clear the input stream
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+            std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+            continue; // Skip to the next iteration of the loop
+        }
+
+        if (valg < 1 || valg > fjender.size())
+        {
+            std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+            vaelgKamp();
+            return;
+        }
+        Fjende valgtFjende = fjender[valg - 1];
+        Kamp kamp(spiller, valgtFjende);
+        kamp.startKamp();
         return;
     }
-    Fjende valgtFjende = fjender[valg - 1];
-    Kamp kamp(spiller, valgtFjende);
-    kamp.startKamp();
 }
 
 // loads the enemies
@@ -147,6 +173,15 @@ void Menu::vaelgHero()
     std::cout << "Vil du lave en ny helt (1) eller vælge en forudindlæst helt (2)?" << std::endl;
     int valg;
     std::cin >> valg;
+    // Check if input is valid
+    if (std::cin.fail() || valg < 1 || valg > 3)
+    {
+        std::cin.clear(); // Clear the input stream
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+        vaelgHero(); // Recursively call to allow the user to try again
+        return; // Exit the current function to prevent further execution
+    }
     switch (valg)
     {
     case 1:
@@ -174,6 +209,14 @@ void Menu::udfordreGrotte()
     int valg;
     std::cin >> valg;
     Grotte valgtGrotte;
+    while (valg < 1 || valg > 3)
+    {
+        std::cin.clear();                                                   // Clear the input stream
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Vælg en gyldig grotte (1-3): ";
+        valg = 0; // Reset valg to ensure it is re-entered
+        std::cin >> valg;
+    }
     switch (valg)
     {
     case 1:
