@@ -7,10 +7,15 @@
 #include "Kamp.h"
 #include "Grotte.h"
 #include "GrotteFabrik.h"
+#include <QCoreApplication>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+
 class Menu
 {
 private:
-    /* data */
+    QSqlDatabase db; // Database connection
     Hero spiller;
     std::vector<Fjende> fjender;
     GrotteFabrik grotteFabrik;

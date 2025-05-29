@@ -8,10 +8,11 @@ protected:
     int hp;
     int styrke;
     int maxHp;
+    int id;
 
 public:
     Character(/* args */);
-    Character(std::string name, int maxhp, int styrke);
+    Character(int id, std::string name, int maxhp, int styrke);
     ~Character();
     std::string getName() const { return name; }
     int getHp() const { return hp; }

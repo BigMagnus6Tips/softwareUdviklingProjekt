@@ -10,9 +10,7 @@ Hero::Hero(/* args */)
 
 // Constructor for Hero class
 // Initializes the hero with a name, health, and attack power
-Hero::Hero(std::string name, int health, int attackPower) : Character(name, health, attackPower), level(1), experience(0), maxExperience(1000)
-{
-}
+
 
 Hero::~Hero()
 {

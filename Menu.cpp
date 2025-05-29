@@ -13,10 +13,27 @@
 // Constructor for menu class
 Menu::Menu(/* args */)
 {
+    // Initialize the database connection
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("projectDatabase.db");
+
+    if (!db.open())
+    {
+        std::cerr << "Kunne ikke åbne databasen: " << db.lastError().text().toStdString() << std::endl;
+        return;
+    }
+
+    // Initialize the GrotteFabrik
+    grotteFabrik = GrotteFabrik();
 }
 
 Menu::~Menu()
 {
+    // Close the database connection
+    if (db.isOpen())
+    {
+        db.close();
+    }
 }
 
 // Starts the game by loading enemies, choosing a hero, and displaying the menu
@@ -111,18 +128,29 @@ void Menu::vaelgKamp()
 void Menu::loadFjender()
 {
 
-    // kan udbyttes med en database eller json fil
-    // hero har 10 hp og 2 skade
-    fjender.push_back(Fjende("Goblin", 15, 3, 500));
-    fjender.push_back(Fjende("Ork", 25, 5, 800));
-    fjender.push_back(Fjende("Drage", 40, 8, 1000));
-    fjender.push_back(Fjende("Vampyr", 20, 4, 350));
-    fjender.push_back(Fjende("Zombie", 12, 2, 150));
-    fjender.push_back(Fjende("Trold", 30, 6, 700));
-    fjender.push_back(Fjende("Spøgelse", 10, 1, 200));
-    fjender.push_back(Fjende("Mumie", 35, 7, 900));
-    fjender.push_back(Fjende("Varulv", 45, 9, 1100));
-    fjender.push_back(Fjende("Skelet", 8, 2, 200));
+    // Loader fjender fra databasen
+    fjender.clear(); // tømmer fjender vektoren
+    QSqlQuery query(db);
+    if (!query.exec("SELECT * FROM fjende"))
+    {
+        std::cerr << "Kunne ikke hente fjender: " << query.lastError().text().toStdString() << std::endl;
+        return;
+    }
+
+    while (query.next())
+    {
+        int id = query.value("fjendeID").toInt();
+        std::string navn = query.value("navn").toString().toStdString();
+        int liv = query.value("liv").toInt();
+        int styrke = query.value("styrke").toInt();
+        int experienceGiven = query.value("experienceGiven").toInt();
+
+        Fjende fjende(id, navn, liv, styrke, experienceGiven);
+        fjender.push_back(fjende);
+    }
+    
+
+
 }
 
 // creates a new Hero
@@ -134,7 +162,20 @@ void Menu::newHero()
     std::cout << "Indtast din helts navn: ";
     std::cin >> navn;
 
-    spiller = Hero(navn, 10, 2);
+    //check databasen for ledigt id
+    QSqlQuery query(db);
+    if (!query.exec("SELECT MAX(heroID) FROM Hero"))
+    {
+        std::cerr << "Kunne ikke hente ledigt id: " << query.lastError().text().toStdString() << std::endl;
+        return;
+    }
+    int id = 1; // Default id
+    if (query.next())
+    {
+        id = query.value(0).toInt() + 1; // Get the next available id
+    }
+
+    spiller = Hero(id, navn, 10, 2, 1, 0, 1000); // Create a new hero with default values
 }
 
 // loads a preloaded hero
@@ -142,11 +183,26 @@ void Menu::newHero()
 void Menu::loadHero()
 {
     std::vector<Hero> preloadedHeroes;
-    preloadedHeroes.push_back(Hero("Tim den Store", 20, 6));
-    preloadedHeroes.push_back(Hero("Mester Jacob", 12, 3));
-    preloadedHeroes.push_back(Hero("Fantino den Majestætiske", 15, 3));
-    preloadedHeroes.push_back(Hero("Bob fra smeden", 8, 1));
-    preloadedHeroes.push_back(Hero("Lille Lars", 25, 1));
+    // Load preloaded heroes from the database
+    QSqlQuery query(db);
+    if (!query.exec("SELECT * FROM Hero"))
+    {
+        std::cerr << "Kunne ikke hente forudindlæste helte: " << query.lastError().text().toStdString() << std::endl;
+        return;
+    }
+    while (query.next())
+    {
+        int id = query.value("heroID").toInt();
+        std::string navn = query.value("navn").toString().toStdString();
+        int liv = query.value("liv").toInt();
+        int styrke = query.value("styrke").toInt();
+        int level = query.value("level").toInt();
+        int experience = query.value("experience").toInt();
+        int guld = query.value("guld").toInt();
+
+        Hero hero(id, navn, liv, styrke, level, experience, 1000, guld);
+        preloadedHeroes.push_back(hero);
+    }
 
     std::cout << "Vælg en forudindlæst helt:" << std::endl;
     for (size_t i = 0; i < preloadedHeroes.size(); i++)

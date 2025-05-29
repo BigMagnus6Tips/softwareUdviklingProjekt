@@ -7,8 +7,8 @@ Character::Character(/* args */)
 
 // Constructor for Character class
 // Initializes the character with a name, maximum health, and attack power
-Character::Character(std::string name, int maxhp, int styrke)
-    : name(name), maxHp(maxhp), hp(maxhp), styrke(styrke)
+Character::Character(int id, std::string name, int maxhp, int styrke)
+    : id(id), name(name), maxHp(maxhp), hp(maxhp), styrke(styrke)
 {
 }
 
