@@ -1,35 +1,35 @@
-CREATE TABLE Hero {
-	heroID INTEGER PRIMARY KEY
-	name TEXT
-	hp INTEGER
-	styrke INTEGER
-	xp INTEGER
-	level INTEGER
+CREATE TABLE Hero (
+	heroID INTEGER PRIMARY KEY,
+	name TEXT,
+	hp INTEGER,
+	styrke INTEGER,
+	xp INTEGER,
+	level INTEGER,
 	guld INTEGER DEFAULT 0
-}
+);
 
-CREATE TABLE Fjende {
-	fjendeID INTEGER PRIMARY KEY
-	navn TEXT
-	hp INTEGER
-	styrke INTEGER
+CREATE TABLE Fjende (
+	fjendeID INTEGER PRIMARY KEY,
+	navn TEXT,
+	hp INTEGER,
+	styrke INTEGER,
 	xpGivet INTEGER
-}
+);
 
-CREATE TABLE Grotte {
-	grotteID INTEGER PRIMARY KEY
-	navn TEXT
+CREATE TABLE Grotte (
+	grotteID INTEGER PRIMARY KEY,
+	navn TEXT,
 	svearhedsgrad INTEGER
-}
+);
 
-CREATE TABLE Vaaben {
-	vaabenID INTEGER PRIMARY KEY
-	navn TEXT
-	skadestyrke INTEGER
-	skade INTEGER
-	holdbarhed INTEGER
+CREATE TABLE Vaaben (
+	vaabenID INTEGER PRIMARY KEY,
+	navn TEXT,
+	skadestyrke INTEGER,
+	skade INTEGER,
+	holdbarhed INTEGER,
 	pris INTEGER
-}
+);
 
 CREATE TABLE HeroVaaben (
     heroVaabenID INTEGER PRIMARY KEY,

@@ -22,7 +22,7 @@ Kamp::Kamp(Hero& spiller, Fjende& modstander) : spiller(spiller), modstander(mod
 // Displays a message indicating the battle has started
 // Player and enemy take turns attacking each other
 // The battle continues until one of them is dead
-void Kamp::startKamp()
+void Kamp::startKamp(QSqlDatabase db)
 {
     std::cout << "Kamp starter!" << std::endl;
     spiller.startKamp();

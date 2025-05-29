@@ -119,7 +119,7 @@ void Menu::vaelgKamp()
         }
         Fjende valgtFjende = fjender[valg - 1];
         Kamp kamp(spiller, valgtFjende);
-        kamp.startKamp();
+        kamp.startKamp(db);
         return;
     }
 }
@@ -141,9 +141,9 @@ void Menu::loadFjender()
     {
         int id = query.value("fjendeID").toInt();
         std::string navn = query.value("navn").toString().toStdString();
-        int liv = query.value("liv").toInt();
+        int liv = query.value("hp").toInt();
         int styrke = query.value("styrke").toInt();
-        int experienceGiven = query.value("experienceGiven").toInt();
+        int experienceGiven = query.value("xpGivet").toInt();
 
         Fjende fjende(id, navn, liv, styrke, experienceGiven);
         fjender.push_back(fjende);
@@ -193,11 +193,11 @@ void Menu::loadHero()
     while (query.next())
     {
         int id = query.value("heroID").toInt();
-        std::string navn = query.value("navn").toString().toStdString();
-        int liv = query.value("liv").toInt();
+        std::string navn = query.value("name").toString().toStdString();
+        int liv = query.value("hp").toInt();
         int styrke = query.value("styrke").toInt();
         int level = query.value("level").toInt();
-        int experience = query.value("experience").toInt();
+        int experience = query.value("xp").toInt();
         int guld = query.value("guld").toInt();
 
         Hero hero(id, navn, liv, styrke, level, experience, 1000, guld);
@@ -290,5 +290,5 @@ void Menu::udfordreGrotte()
         return;
     }
 
-    valgtGrotte.udfordreGrotte(spiller);
+    valgtGrotte.udfordreGrotte(spiller, db);
 }

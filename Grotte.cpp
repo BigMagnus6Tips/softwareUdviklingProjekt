@@ -31,7 +31,7 @@ void Grotte::VisGrotteInfo() const
     
 }
 
-void Grotte::udfordreGrotte(Hero &spiller)
+void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
 {
     std::cout << "Du udfordrer grotten: " << navn << std::endl;
 
@@ -48,7 +48,7 @@ void Grotte::udfordreGrotte(Hero &spiller)
 
 
         Kamp kamp(spiller, fjender[i]);
-        kamp.startKamp();
+        kamp.startKamp(db);
 
         if (spiller.getHp() > 0)
         {

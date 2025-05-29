@@ -4,6 +4,11 @@
 #include "Character.h"
 #include "Hero.h"
 #include "Fjende.h"
+#include <QCoreApplication>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+
 class Kamp
 {
 private:
@@ -14,7 +19,7 @@ public:
     Kamp();
     Kamp(Hero& spiller, Fjende& modstander);
     ~Kamp();
-    void startKamp();
+    void startKamp(QSqlDatabase db);
     void spillerAngrib();
     void fjendeAngrib();
     void visStatus();
