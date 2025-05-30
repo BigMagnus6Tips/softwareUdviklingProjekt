@@ -17,9 +17,9 @@ private:
     QSqlDatabase db;
 public:
     Kamp();
-    Kamp(Hero& spiller, Fjende& modstander);
+    Kamp(Hero& spiller, Fjende& modstander, QSqlDatabase db);
     ~Kamp();
-    void startKamp(QSqlDatabase db);
+    void startKamp();
     void spillerAngrib();
     void fjendeAngrib();
     void visStatus();

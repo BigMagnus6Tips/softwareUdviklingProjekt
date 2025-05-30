@@ -14,19 +14,21 @@ Kamp::~Kamp()
 
 // Constructor for the Kamp class
 // Initializes the player and enemy characters
-Kamp::Kamp(Hero& spiller, Fjende& modstander) : spiller(spiller), modstander(modstander)
+Kamp::Kamp(Hero& spiller, Fjende& modstander, QSqlDatabase db) : spiller(spiller), modstander(modstander)
 {
+    this->db = db; // Store the database connection 
 }
 
 // Starts the battle between the player and the enemy
 // Displays a message indicating the battle has started
 // Player and enemy take turns attacking each other
 // The battle continues until one of them is dead
-void Kamp::startKamp(QSqlDatabase db)
+void Kamp::startKamp()
 {
     std::cout << "Kamp starter!" << std::endl;
     spiller.startKamp();
     modstander.startKamp();
+    
 
     while (spiller.getHp() > 0 && modstander.getHp() > 0)
     {
@@ -91,7 +93,7 @@ void Kamp::slutKamp()
         std::cout << modstander.getName() << " er død!" << std::endl;
         std::cout << spiller.getName() << " vinder kampen!" << std::endl;
         std::cout << "Du får " << modstander.getExperienceGiven() << " XP!" << std::endl;
-        spiller.giveExperience(modstander.getExperienceGiven());
+        spiller.giveExperience(modstander.getExperienceGiven(), db);
         spiller.printHero();
     }
 

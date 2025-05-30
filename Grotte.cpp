@@ -47,8 +47,8 @@ void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
         std::cin >> tryk;
 
 
-        Kamp kamp(spiller, fjender[i]);
-        kamp.startKamp(db);
+        Kamp kamp(spiller, fjender[i], db);
+        kamp.startKamp();
 
         if (spiller.getHp() > 0)
         {
@@ -65,6 +65,6 @@ void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
 
     std::cout << "Du har besejret grotten" << std::endl;
     std::cout << "Du får " << grotteGuld << " guld" << std::endl;
-    spiller.giveGold(grotteGuld);
+    spiller.giveGold(grotteGuld, db);
     return;
 }

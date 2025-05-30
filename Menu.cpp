@@ -118,8 +118,8 @@ void Menu::vaelgKamp()
             return;
         }
         Fjende valgtFjende = fjender[valg - 1];
-        Kamp kamp(spiller, valgtFjende);
-        kamp.startKamp(db);
+        Kamp kamp(spiller, valgtFjende, db);
+        kamp.startKamp();
         return;
     }
 }
