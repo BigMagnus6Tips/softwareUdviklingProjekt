@@ -25,6 +25,7 @@ Menu::Menu(/* args */)
 
     // Initialize the GrotteFabrik
     grotteFabrik = GrotteFabrik();
+    vaabenFabrik.loadVaabenSkabeloner(); // Load weapon templates from the database
 }
 
 Menu::~Menu()
@@ -192,6 +193,8 @@ void Menu::newHero()
     }
 
     spiller = Hero(id, navn, 10, 2, 1, 0, 1000); // Create a new hero with default values
+    spiller.giveWeapon(vaabenFabrik.bygVaabenEfterSkabelon(1), db); // Give the hero a weapon
+
 }
 
 // loads a preloaded hero
@@ -217,6 +220,9 @@ void Menu::loadHero()
         int guld = query.value("guld").toInt();
 
         Hero hero(id, navn, liv, styrke, level, experience, 1000, guld);
+        // Load the hero's weapons
+        hero.loadWeapons(db);
+        
         preloadedHeroes.push_back(hero);
     }
 
@@ -308,3 +314,110 @@ void Menu::udfordreGrotte()
 
     valgtGrotte.udfordreGrotte(spiller, db);
 }
+
+// Analyserer databasen for at vise helte, fjender og våben
+void Menu::analyserDB()
+{
+    std::cout << "Analyserer databasen..." << std::endl;
+    int valg;
+    std::cout << "Vælg en analyse:" << std::endl;
+    std::cout << "1. Analyser helte og vis dem i alfabestisk rækkefølge" << std::endl;
+    std::cout << "2. Analyser Våben og vis dem" << std::endl;
+    std::cout << "3. Forlad til hovedmenu" << std::endl;
+    std::cout << "Indtast dit valg (1-3): ";
+
+
+    // Check if input is valid
+    std::cin >> valg;
+    if (std::cin.fail() || valg < 1 || valg > 3)
+    {
+        std::cin.clear();                                                   // Clear the input stream
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+        analyserDB(); // Recursively call to allow the user to try again
+        return; // Exit the current function to prevent further execution
+    }
+
+    switch (valg)
+    {
+    case 1:
+        analyserVisHeroer();
+        break;
+    case 2:
+        analyserVisVaaben();
+        break;
+    case 3:
+        std::cout << "Tilbage til hovedmenuen..." << std::endl;
+        return; // Exit the function to return to the main menu
+    default:
+        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+        analyserDB();
+        break;
+    }
+
+}
+
+// Displays heroes in alphabetical order with an id and the number of monsters defeated by each hero, then gives the option to view a specific hero's details
+void Menu::analyserVisHeroer()
+{
+    QSqlQuery query(db);
+    if (!query.exec("SELECT * FROM Hero ORDER BY name ASC"))
+    {
+        std::cerr << "Kunne ikke hente helte: " << query.lastError().text().toStdString() << std::endl;
+        return;
+    }
+    std::cout << "Helte i alfabestisk rækkefølge:" << std::endl;
+    std::cout << "ID\tNavn\tAntal besejrede monstre" << std::endl;
+    while (query.next())
+    {
+        int id = query.value("heroID").toInt();
+        std::string navn = query.value("name").toString().toStdString();
+        int antalBesejredeMonstre = query.value("antalBesejredeMonstre").toInt(); // Assuming this field exists in the Hero table
+
+        std::cout << id << "\t" << navn << "\t" << antalBesejredeMonstre << std::endl;
+    }
+    std::cout << "Vælg en helt for at se detaljer (indtast ID): ";
+    int id;
+    std::cin >> id;
+    if (std::cin.fail())
+    {
+        std::cin.clear();                                                   // Clear the input stream
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Ugyldigt ID, prøv igen." << std::endl;
+        analyserVisHeroer(); // Recursively call to allow the user to try again
+        return; // Exit the current function to prevent further execution
+    }
+    QSqlQuery heroQuery(db);
+    heroQuery.prepare("SELECT * FROM Hero WHERE heroID = ?");
+    heroQuery.addBindValue(id);
+    if (!heroQuery.exec())
+    {
+        std::cerr << "Kunne ikke hente helt: " << heroQuery.lastError().text().toStdString() << std::endl;
+        return;
+    }
+    if (heroQuery.next())
+    {
+        std::string navn = heroQuery.value("name").toString().toStdString();
+        int hp = heroQuery.value("hp").toInt();
+        int styrke = heroQuery.value("styrke").toInt();
+        int level = heroQuery.value("level").toInt();
+        int experience = heroQuery.value("xp").toInt();
+        int guld = heroQuery.value("guld").toInt();
+
+        std::cout << "Detaljer for helt " << navn << ":" << std::endl;
+        std::cout << "HP: " << hp << std::endl;
+        std::cout << "Styrke: " << styrke << std::endl;
+        std::cout << "Level: " << level << std::endl;
+        std::cout << "Experience: " << experience << std::endl;
+        std::cout << "Guld: " << guld << std::endl;
+    }
+    else
+    {
+        std::cout << "Ingen helt fundet med ID: " << id << std::endl;
+    }
+    std::cout << "Tryk på Enter for at fortsætte..." << std::endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the newline character left in the input buffer
+    std::cin.get(); // Wait for the user to press Enter
+    analyserDB(); // Return to the main analysis menu
+}
+

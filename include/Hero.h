@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include "Vaaben.h"
 
 class Hero : public Character
 {
@@ -14,7 +15,7 @@ private:
     int experience;
     int maxExperience;
     int gold = 0; // Initialize gold to 0
-    
+    std::vector<Vaaben> inventar; // Vector to hold the hero's weapons
 public:
     Hero(/* args */);
     Hero(int id, std::string name, int health, int attackPower, int level, int experience, int maxExperience, int gold = 0)
@@ -25,6 +26,9 @@ public:
     void giveExperience(int exp, QSqlDatabase db);
     int getLevel() const { return level; }
     void giveGold(int guld, QSqlDatabase db);
+    void giveWeapon(const Vaaben &vaaben, QSqlDatabase db);
+    Vaaben getWeapon(int index) const { return inventar.at(index); }
+    void loadWeapons(QSqlDatabase db);
 };
 
 

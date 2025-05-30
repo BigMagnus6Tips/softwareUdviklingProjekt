@@ -18,6 +18,7 @@ public:
     int getHp() const { return hp; }
     int getMaxHp() const { return maxHp; }
     int getStyrke() const { return styrke; }
+    int getId() const { return id; }
     void setName(const std::string &newName) { name = newName; }
     void setHp(int newHp) { hp = newHp; }
     void setMaxHp(int newMaxHp) { maxHp = newMaxHp; }

@@ -12,12 +12,18 @@ Vaaben::~Vaaben()
     
 bool Vaaben::fjernholdbarhed()
 {
-    holdbarhed--;
-    if (holdbarhed <= 0)
+    
+    if (holdbarhed == 1)
     {
+        holdbarhed--; 
         std::cout << "Dit våben " << navn << " er gået i stykker!" << std::endl;
         return true; // Return true if the weapon is broken
+    } else if (holdbarhed == -1)
+    {
+        return false; // Return false if the weapon has infinite dyrability
     }
+    holdbarhed--;
+    
     return false; // Return false if the weapon is still usable
 }
 

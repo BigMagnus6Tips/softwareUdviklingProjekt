@@ -18,7 +18,7 @@ void VaabenFabrik::loadVaabenSkabeloner()
     {
         // Create a weapon object from the database record
         Vaaben vaaben(
-            query.value("id").toInt(),
+            query.value("VaabenID").toInt(),
             query.value("navn").toString().toStdString(),
             query.value("skade").toInt(),
             query.value("skadestyrke").toInt(),

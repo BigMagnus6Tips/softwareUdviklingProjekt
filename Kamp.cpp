@@ -95,6 +95,30 @@ void Kamp::slutKamp()
         std::cout << "Du får " << modstander.getExperienceGiven() << " XP!" << std::endl;
         spiller.giveExperience(modstander.getExperienceGiven(), db);
         spiller.printHero();
+
+        // find highest kampID in the database
+        QSqlQuery lastQuery(db);
+        lastQuery.exec("SELECT MAX(kampID) AS kampID FROM Kamp");
+        int kampID = 0;
+        if (lastQuery.next())
+        {
+            kampID = lastQuery.value("kampID").toInt();
+        }
+        else
+        {
+            std::cerr << "Fejl ved hentning af sidste kampID: " << lastQuery.lastError().text().toStdString() << std::endl;
+        }
+        // add the kamp to the database
+        QSqlQuery query(db);
+        query.prepare("INSERT INTO Kamp (kampID, heroID, fjendeID, heroVaabenID) VALUES (:kampID, :heroID, :fjendeID, :heroVaabenID)");
+        query.bindValue(":kampID", kampID + 1); // Auto-incremented ID
+        query.bindValue(":heroID", spiller.getId());
+        query.bindValue(":fjendeID", modstander.getId());
+        query.bindValue(":heroVaabenID", spiller.getWeapon(0).getId());
+        if (!query.exec())
+        {
+            std::cerr << "Fejl ved indsættelse af kamp i databasen: " << query.lastError().text().toStdString() << std::endl;
+        }
     }
 
     

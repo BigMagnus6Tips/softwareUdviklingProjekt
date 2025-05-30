@@ -23,6 +23,7 @@ public:
     int getHoldbarhed() const { return holdbarhed; }
     int getPris() const { return pris; }
     int getId() const { return id; }
+    
 
     bool fjernholdbarhed(); // Decrease durability and check if the weapon is broken
     int tilfoejSkade(int spillerskade); // Calculate the damage dealt by the weapon
