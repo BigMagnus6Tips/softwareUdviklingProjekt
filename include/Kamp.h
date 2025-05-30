@@ -14,7 +14,7 @@ class Kamp
 private:
     Hero& spiller;
     Fjende& modstander;
-    
+    QSqlDatabase db;
 public:
     Kamp();
     Kamp(Hero& spiller, Fjende& modstander);

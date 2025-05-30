@@ -175,6 +175,22 @@ void Menu::newHero()
         id = query.value(0).toInt() + 1; // Get the next available id
     }
 
+    // add the new hero to the database
+    QSqlQuery insertQuery(db);
+    insertQuery.prepare("INSERT INTO Hero (heroID, name, hp, styrke, level, xp, guld) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    insertQuery.addBindValue(id);
+    insertQuery.addBindValue(QString::fromStdString(navn));
+    insertQuery.addBindValue(10); // Default hp
+    insertQuery.addBindValue(2);  // Default styrke
+    insertQuery.addBindValue(1);  // Default level
+    insertQuery.addBindValue(0);  // Default experience
+    insertQuery.addBindValue(0);  // Default gold
+    if (!insertQuery.exec())
+    {
+        std::cerr << "Kunne ikke indsætte ny helt: " << insertQuery.lastError().text().toStdString() << std::endl;
+        return;
+    }
+
     spiller = Hero(id, navn, 10, 2, 1, 0, 1000); // Create a new hero with default values
 }
 
