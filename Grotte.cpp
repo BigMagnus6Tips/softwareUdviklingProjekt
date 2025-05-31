@@ -94,6 +94,7 @@ void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
         int kampID = kamp.startKamp();
         if (kampID > 0)
         {
+            std::cout << "KampID: " << kampID << std::endl;
             // insert grotteKamp into the database
             QSqlQuery grotteKampQuery(db);
             grotteKampQuery.prepare("INSERT INTO GrotteKamp (grotteKampID, grotteID, kampID) VALUES (:grotteKampID, :grotteID, :kampID)");
@@ -101,6 +102,11 @@ void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
             grotteKampQuery.bindValue(":grotteKampID", ID); // Assuming grotteKampID is auto-incremented
             grotteKampQuery.bindValue(":grotteID", grotteId);
             grotteKampQuery.bindValue(":kampID", kampID);
+            if (!grotteKampQuery.exec())
+            {
+                std::cerr << "Error inserting GrotteKamp into database: " << grotteKampQuery.lastError().text().toStdString() << std::endl;
+                return;
+            }
         }
 
         if (spiller.getHp() > 0)
