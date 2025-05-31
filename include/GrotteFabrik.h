@@ -5,6 +5,10 @@
 #include "Grotte.h"
 #include <cstdlib>
 #include <vector>
+#include <QCoreApplication>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 class GrotteFabrik
 {
@@ -19,7 +23,7 @@ private:
     int grotteGuld;
     Grotte grotte; // Grotte object to be created
     // Factory method to create a Grotte
-
+    QSqlDatabase db;
     // Array of random prefix names for the Grotte
     std::string randomPrefixNames[10] = {"Mystiske", "Skjulte", "Gammle", "Forladte", "Udfordrende", "dødbringende", "mørke", "farlige", "magiske", "fortryllede"};
 
@@ -27,7 +31,8 @@ private:
     std::string randomSuffixNames[10] = {"Hule", "Grotte", "Ruin", "Labyrint", "Krypt", "Grav", "Borg", "Tempel", "Bunker", "Helligdom"};
 
 public:
-    GrotteFabrik(/* args */);
+    GrotteFabrik() {}
+    GrotteFabrik(QSqlDatabase db);
     ~GrotteFabrik();
 
     // Method to create a random Grotte

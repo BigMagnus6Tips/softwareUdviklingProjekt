@@ -28,7 +28,6 @@ void Grotte::VisGrotteInfo() const
         std::cout << "Fjende " << i + 1 << ": " << fjender[i].getName() << std::endl;
         std::cout << "Liv: " << fjender[i].getLiv() << ", Styrke: " << fjender[i].getStyrke() << std::endl;
     }
-    
 }
 
 void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
@@ -37,6 +36,31 @@ void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
 
     VisGrotteInfo();
 
+    // insert the Grotte into the database
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO grotter (grotteID, navn, svaerhedsgrad) VALUES (:grotteID, :navn, :level)");
+    query.bindValue(":grotteID", grotteId);
+    query.bindValue(":navn", QString::fromStdString(navn));
+    query.bindValue(":level", grotteLevel);
+    if (!query.exec())
+    {
+        std::cerr << "Error inserting Grotte into database: " << query.lastError().text().toStdString() << std::endl;
+        return;
+    }
+
+    // find the highest id of the grotteKamp in the database
+    QSqlQuery lastQuery(db);
+    lastQuery.exec("SELECT MAX(grotteKampID) AS grotteKampID FROM GrotteKamp");
+    int grotteKampID = 0;
+    if (lastQuery.next())
+    {
+        grotteKampID = lastQuery.value("grotteKampID").toInt();
+    }
+    else
+    {
+        std::cerr << "Error fetching last GrotteKamp ID: " << lastQuery.lastError().text().toStdString() << std::endl;
+        return;
+    }
 
     for (size_t i = 0; i < fjender.size(); i++)
     {
@@ -46,9 +70,18 @@ void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
         char tryk;
         std::cin >> tryk;
 
-
         Kamp kamp(spiller, fjender[i], db);
-        kamp.startKamp();
+        int kampID = kamp.startKamp();
+        if (kampID > 0)
+        {
+            // insert grotteKamp into the database
+            QSqlQuery grotteKampQuery(db);
+            grotteKampQuery.prepare("INSERT INTO GrotteKamp (grotteKampID, grotteID, kampID) VALUES (:grotteKampID, :grotteID, :kampID)");
+            int ID = grotteKampID + i + 1;
+            grotteKampQuery.bindValue(":grotteKampID", ID); // Assuming grotteKampID is auto-incremented
+            grotteKampQuery.bindValue(":grotteID", grotteId);
+            grotteKampQuery.bindValue(":kampID", kampID);
+        }
 
         if (spiller.getHp() > 0)
         {
@@ -66,5 +99,6 @@ void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
     std::cout << "Du har besejret grotten" << std::endl;
     std::cout << "Du får " << grotteGuld << " guld" << std::endl;
     spiller.giveGold(grotteGuld, db);
+    spiller.giveWeapon(praemie, db);
     return;
 }

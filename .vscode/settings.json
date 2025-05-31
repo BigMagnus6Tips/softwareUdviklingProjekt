@@ -67,6 +67,7 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "qsqldatabase": "cpp"
+        "qsqldatabase": "cpp",
+        "qcoreapplication": "cpp"
     }
 }

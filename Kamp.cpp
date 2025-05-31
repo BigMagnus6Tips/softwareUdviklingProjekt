@@ -23,7 +23,7 @@ Kamp::Kamp(Hero& spiller, Fjende& modstander, QSqlDatabase db) : spiller(spiller
 // Displays a message indicating the battle has started
 // Player and enemy take turns attacking each other
 // The battle continues until one of them is dead
-void Kamp::startKamp()
+int Kamp::startKamp()
 {
     std::cout << "Kamp starter!" << std::endl;
     spiller.startKamp();
@@ -43,7 +43,7 @@ void Kamp::startKamp()
         visStatus();
         fjendeAngrib();
     }
-    
+    return id;
 }
 
 // The player attacks the enemy
@@ -86,7 +86,7 @@ void Kamp::slutKamp()
     if (spiller.getHp() <= 0)
     {
         std::cout << spiller.getName() << " er død!" << std::endl;
-        
+        id = -1;
     }
     else if (modstander.getHp() <= 0)
     {
@@ -115,6 +115,7 @@ void Kamp::slutKamp()
         query.bindValue(":heroID", spiller.getId());
         query.bindValue(":fjendeID", modstander.getId());
         query.bindValue(":heroVaabenID", spiller.getWeapon(0).getId());
+        id = kampID + 1; // Set the ID of the current battle
         if (!query.exec())
         {
             std::cerr << "Fejl ved indsættelse af kamp i databasen: " << query.lastError().text().toStdString() << std::endl;

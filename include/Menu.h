@@ -23,14 +23,7 @@ private:
     GrotteFabrik grotteFabrik;
     VaabenFabrik vaabenFabrik = VaabenFabrik(db); // Initialize the weapon factory with the database connection
 
-    /*
-    Vis ”hero”s i alfabetisk rækkefølge
-4
-• Vis hvor mange monstre vær ”hero” har besejret
-• For en given ”hero” vis hvor mange monstre vært v˚aben har besejret
-• For hvert v˚aben vis hvilken ”hero” der har besejret flest monstre med
-dette v˚aben
-    */
+    
 
     void analyserVisHeroer();
     void analyserHeroVedIndex(int index);
@@ -50,6 +43,6 @@ public:
     void newHero();
     void loadHero();
     void udfordreGrotte();
-
+    void vaelganalyser();
     void analyserDB();
 };

@@ -15,11 +15,12 @@ private:
     Hero& spiller;
     Fjende& modstander;
     QSqlDatabase db;
+    int id = 0;
 public:
     Kamp();
     Kamp(Hero& spiller, Fjende& modstander, QSqlDatabase db);
     ~Kamp();
-    void startKamp();
+    int startKamp();
     void spillerAngrib();
     void fjendeAngrib();
     void visStatus();

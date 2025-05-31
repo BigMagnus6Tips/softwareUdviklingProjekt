@@ -7,6 +7,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include "Vaaben.h"
 
 
 class Grotte
@@ -20,6 +21,7 @@ private:
     int grotteType; // 0 = normal, 1 = boss
     int grotteSize; // 0 = small, 1 = medium, 2 = large
     int grotteGuld;
+    Vaaben praemie;
 
 public:
     Grotte(/* args */);
@@ -34,8 +36,10 @@ public:
     void setGrotteType(int type) { grotteType = type; }
     void setGrotteSize(int size) { grotteSize = size; }
     void setNavn(const std::string &newNavn) { navn = newNavn; }
+    void setPraemie(const Vaaben &newPraemie) { praemie = newPraemie; }
     std::string getNavn() const { return navn; }
     int getGrotteGuld() const { return grotteGuld; }
+
 
     // For fighting
     Fjende getFjendeVed(int index) const { return fjender.at(index); }

@@ -9,8 +9,10 @@
 #include <chrono>
 #include <random>
 
-GrotteFabrik::GrotteFabrik(/* args */)
+GrotteFabrik::GrotteFabrik(QSqlDatabase db)
 {
+    
+    this->db = db; 
 }
 
 GrotteFabrik::~GrotteFabrik()

@@ -24,7 +24,7 @@ Menu::Menu(/* args */)
     }
 
     // Initialize the GrotteFabrik
-    grotteFabrik = GrotteFabrik();
+    grotteFabrik = GrotteFabrik(db);
     vaabenFabrik.loadVaabenSkabeloner(); // Load weapon templates from the database
 }
 
@@ -43,6 +43,7 @@ void Menu::start()
 {
     std::cout << "Velkommen til eventyret!" << std::endl;
     loadFjender();
+    vaelganalyser();
     vaelgHero();
     visMenu();
 }
@@ -222,7 +223,7 @@ void Menu::loadHero()
         Hero hero(id, navn, liv, styrke, level, experience, 1000, guld);
         // Load the hero's weapons
         hero.loadWeapons(db);
-        
+
         preloadedHeroes.push_back(hero);
     }
 
@@ -421,3 +422,115 @@ void Menu::analyserVisHeroer()
     analyserDB(); // Return to the main analysis menu
 }
 
+// Displays weapons and allows the user to view details of a specific weapon
+
+void Menu::analyserVisVaaben()
+{
+    QSqlQuery query(db);
+    if (!query.exec("SELECT * FROM Vaaben"))
+    {
+        std::cerr << "Kunne ikke hente våben: " << query.lastError().text().toStdString() << std::endl;
+        return;
+    }
+    std::cout << "Våben:" << std::endl;
+    std::cout << "ID\tNavn\tStyrke\tPris" << std::endl;
+    while (query.next())
+    {
+        int id = query.value("vaabenID").toInt();
+        std::string navn = query.value("navn").toString().toStdString();
+        int styrke = query.value("styrke").toInt();
+        int pris = query.value("pris").toInt();
+
+        std::cout << id << "\t" << navn << "\t" << styrke << "\t" << pris << std::endl;
+    }
+    std::cout << "Vælg et våben for at se detaljer (indtast ID): ";
+    int id;
+    std::cin >> id;
+    if (std::cin.fail())
+    {
+        std::cin.clear();                                                   // Clear the input stream
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Ugyldigt ID, prøv igen." << std::endl;
+        analyserVisVaaben(); // Recursively call to allow the user to try again
+        return; // Exit the current function to prevent further execution
+    }
+    analyserVaaben(id);
+}
+
+// Displays details of a specific weapon based on its ID, showing its name, and which hero has killed the most enemies with it
+void Menu::analyserVaaben(int id)
+{
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM Vaaben WHERE vaabenID = ?");
+    query.addBindValue(id);
+    if (!query.exec())
+    {
+        std::cerr << "Kunne ikke hente våben: " << query.lastError().text().toStdString() << std::endl;
+        return;
+    }
+    if (query.next())
+    {
+        std::string navn = query.value("navn").toString().toStdString();
+        int styrke = query.value("styrke").toInt();
+        int pris = query.value("pris").toInt();
+
+        std::cout << "Detaljer for våben " << navn << ":" << std::endl;
+        std::cout << "Styrke: " << styrke << std::endl;
+        std::cout << "Pris: " << pris << std::endl;
+
+        // Find the hero who has killed the most enemies with this weapon
+        QSqlQuery heroQuery(db);
+        heroQuery.prepare("SELECT Hero.name, COUNT(Kamp.fjendeID) AS antalBesejredeMonstre "
+                          "FROM Hero "
+                          "JOIN Kamp ON Hero.heroID = Kamp.heroID "
+                          "WHERE Kamp.vaabenID = ? "
+                          "GROUP BY Hero.heroID "
+                          "ORDER BY antalBesejredeMonstre DESC "
+                          "LIMIT 1");
+        heroQuery.addBindValue(id);
+        if (!heroQuery.exec())
+        {
+            std::cerr << "Kunne ikke hente helte: " << heroQuery.lastError().text().toStdString() << std::endl;
+            return;
+        }
+        if (heroQuery.next())
+        {
+            std::string heldNavn = heroQuery.value("name").toString().toStdString();
+            int antalBesejredeMonstre = heroQuery.value("antalBesejredeMonstre").toInt();
+            std::cout << "Helt der har dræbt flest monstre med dette våben: " << heldNavn
+                      << " (" << antalBesejredeMonstre << " monstre)" << std::endl;
+        }
+        else
+        {
+            std::cout << "Ingen helt har dræbt monstre med dette våben." << std::endl;
+        }
+    }
+    else
+    {
+        std::cout << "Ingen våben fundet med ID: " << id << std::endl;
+    }
+    std::cout << "Tryk på Enter for at fortsætte..." << std::endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the newline character left in the input buffer
+    std::cin.get(); // Wait for the user to press Enter
+    analyserDB(); // Return to the main analysis menu
+}
+    
+void Menu::vaelganalyser()
+{
+    std::cout << "Vil du analysere databasen? (1 for ja, 2 for nej): ";
+    int valg;
+    std::cin >> valg;
+    if (valg == 1)
+    {
+        analyserDB();
+    }
+    else if (valg == 2)
+    {
+        std::cout << "Du har valgt ikke at analysere databasen." << std::endl;
+    }
+    else
+    {
+        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+        vaelganalyser();
+    }
+}
