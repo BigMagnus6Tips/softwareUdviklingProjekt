@@ -11,7 +11,6 @@ Hero::Hero(/* args */)
 // Constructor for Hero class
 // Initializes the hero with a name, health, and attack power
 
-
 Hero::~Hero()
 {
 }
@@ -24,7 +23,7 @@ void Hero::levelUp(QSqlDatabase db)
     setMaxHp(getMaxHp() + 2);
     setStyrke(getStyrke() + 1);
     std::cout << getName() << " er steget til niveau " << level << "!" << std::endl;
-    
+
     // Update the hero's level in the database
     QSqlQuery query(db);
     query.prepare("UPDATE Hero SET level = :level, hp = :hp, styrke = :styrke WHERE heroID = :id");
@@ -36,7 +35,6 @@ void Hero::levelUp(QSqlDatabase db)
     {
         std::cerr << "Fejl ved opdatering af helten i databasen: " << query.lastError().text().toStdString() << std::endl;
     }
-
 }
 
 // Prints the hero's name, level, health, strength, and experience
@@ -59,7 +57,7 @@ void Hero::giveExperience(int exp, QSqlDatabase db)
     if (experience >= maxExperience * level)
     {
         levelUp(db);
-        experience -= maxExperience * (level-1); // Reset experience after leveling up
+        experience -= maxExperience * (level - 1); // Reset experience after leveling up
     }
     // Update the hero's experience in the database
     QSqlQuery query(db);
@@ -70,7 +68,6 @@ void Hero::giveExperience(int exp, QSqlDatabase db)
     {
         std::cerr << "Fejl ved opdatering af helten i databasen: " << query.lastError().text().toStdString() << std::endl;
     }
-
 }
 
 void Hero::giveGold(int guld, QSqlDatabase db)
@@ -101,8 +98,7 @@ void Hero::giveWeapon(const Vaaben &vaaben, QSqlDatabase db)
     query.bindValue(":heroVaabenID", vaaben.getId()); // Assuming getId() returns a unique ID for the weapon
     query.bindValue(":heroID", id);
     query.bindValue(":vaabenID", vaaben.getId());
-    query.bindValue(":holdbarhed", vaaben.getHoldbarhed()); // Assuming getHoldbarhed() returns the durability of the weapon    
-
+    query.bindValue(":holdbarhed", vaaben.getHoldbarhed()); // Assuming getHoldbarhed() returns the durability of the weapon
 
     if (!query.exec())
     {
@@ -135,5 +131,54 @@ void Hero::loadWeapons(QSqlDatabase db)
 
         Vaaben vaaben(vaabenId, navn, skade, skadestyrke, holdbarhed, pris);
         inventar.push_back(vaaben);
+    }
+}
+
+int Hero::angrib(Character &target)
+{
+
+    int spillerskade = getStyrke();
+    if (inventar[valgtVaaben].fjernholdbarhed())
+    {
+        valgtVaaben = 0; // Default to haender if the selected one is broken
+    }
+    
+    int skade = inventar[valgtVaaben].tilfoejSkade(spillerskade);
+    target.setHp(target.getHp() - skade);
+    return target.getHp();
+}
+
+void Hero::startKamp()
+{
+    hp = maxHp;
+
+    // allow the player to choose a weapon from the inventory for the fight
+    while (true)
+    {
+        std::cout << "Vælg et våben fra dit inventar (0-" << inventar.size() - 1 << "): ";
+        for (size_t i = 0; i < inventar.size(); ++i)
+        {
+            std::cout << i << ": " << inventar[i].getNavn() << " (Holdbarhed: " << inventar[i].getHoldbarhed() << ") ";
+        }
+        std::cout << std::endl;
+
+        int choice;
+        std::cin >> choice;
+
+        if (choice >= 0 && choice < static_cast<int>(inventar.size()))
+        {
+            if (inventar[choice].getHoldbarhed() <= 0)
+            {
+                std::cout << "Dette våben er ødelagt. Vælg et andet våben." << std::endl;
+                continue; // Skip to the next iteration if the weapon is broken
+            }
+            valgtVaaben = choice;
+            std::cout << "Du har valgt: " << inventar[valgtVaaben].getNavn() << std::endl;
+            break;
+        }
+        else
+        {
+            std::cout << "Ugyldigt valg. Prøv igen." << std::endl;
+        }
     }
 }

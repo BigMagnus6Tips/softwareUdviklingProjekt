@@ -13,10 +13,9 @@ Vaaben::~Vaaben()
 bool Vaaben::fjernholdbarhed()
 {
     
-    if (holdbarhed == 1)
+    if (holdbarhed == 0)
     {
-        holdbarhed--; 
-        std::cout << "Dit våben " << navn << " er gået i stykker!" << std::endl;
+        std::cout << "Dit våben " << navn << " er i stykker!" << std::endl;
         return true; // Return true if the weapon is broken
     } else if (holdbarhed == -1)
     {

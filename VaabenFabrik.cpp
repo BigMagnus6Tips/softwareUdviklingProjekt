@@ -4,7 +4,7 @@
 void VaabenFabrik::loadVaabenSkabeloner()
 {
     QSqlQuery query(db);
-    query.prepare("SELECT * FROM Vaaben");
+    query.prepare("SELECT * FROM Vaaben ORDER BY VaabenID ASC"); 
     
     if (!query.exec())
     {
@@ -39,6 +39,23 @@ Vaaben VaabenFabrik::bygVaabenEfterSkabelon(int id)
         {
             // Create a new weapon based on the template
             Vaaben nytVaaben = skabelon;
+            nytVaaben.setId(0); // Reset ID for the new weapon instance
+
+            // search for the highest existing ID in the database
+            QSqlQuery query(db);
+            query.prepare("SELECT MAX(HeroVaabenID) FROM HeroVaaben");
+            if (!query.exec())
+            {
+                std::cerr << "Fejl ved hentning af højeste HeroVaabenID: " << query.lastError().text().toStdString() << std::endl;
+                return Vaaben(); // Return an empty weapon if there's an error
+            }
+            int maxId = 0;
+            if (query.next())
+            {
+                maxId = query.value(0).toInt();
+            }
+            nytVaaben.setId(maxId + 1); // Set a new ID for the weapon
+
             return nytVaaben; // Return the new weapon
         }
     }

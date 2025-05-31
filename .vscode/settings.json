@@ -68,6 +68,11 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "qsqldatabase": "cpp",
-        "qcoreapplication": "cpp"
-    }
+        "qcoreapplication": "cpp",
+        "variant": "cpp"
+    },
+    
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json"
+
+
 }

@@ -23,6 +23,6 @@ public:
     void setHp(int newHp) { hp = newHp; }
     void setMaxHp(int newMaxHp) { maxHp = newMaxHp; }
     void setStyrke(int newStyrke) { styrke = newStyrke; }
-    int angrib(Character &target);
-    void startKamp();
+    virtual int angrib(Character &target);
+    virtual void startKamp();
 };

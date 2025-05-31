@@ -23,6 +23,7 @@ public:
     int getHoldbarhed() const { return holdbarhed; }
     int getPris() const { return pris; }
     int getId() const { return id; }
+    void setId(int newId) { id = newId; }
     
 
     bool fjernholdbarhed(); // Decrease durability and check if the weapon is broken

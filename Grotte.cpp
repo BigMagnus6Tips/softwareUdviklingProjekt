@@ -28,20 +28,40 @@ void Grotte::VisGrotteInfo() const
         std::cout << "Fjende " << i + 1 << ": " << fjender[i].getName() << std::endl;
         std::cout << "Liv: " << fjender[i].getLiv() << ", Styrke: " << fjender[i].getStyrke() << std::endl;
     }
+    std::cout << "Grotte niveau: " << grotteLevel << std::endl;
+    std::cout << "Præmie våben: " << praemie.getNavn() << std::endl;
+    std::cout << "Guld i grotten: " << grotteGuld << std::endl;
 }
 
 void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
 {
     std::cout << "Du udfordrer grotten: " << navn << std::endl;
 
+    
+
+    // find the highest id of the grotte in the database
+    QSqlQuery lastQueryGrotte(db);
+    lastQueryGrotte.exec("SELECT MAX(grotteID) AS grotteID FROM Grotte");
+    int grotteId = 0;
+    if (lastQueryGrotte.next())
+    {
+        grotteId = lastQueryGrotte.value("grotteID").toInt();
+    }
+    else
+    {
+        std::cerr << "Error fetching last Grotte ID: " << lastQueryGrotte.lastError().text().toStdString() << std::endl;
+        return;
+    }
+
     VisGrotteInfo();
 
     // insert the Grotte into the database
     QSqlQuery query(db);
-    query.prepare("INSERT INTO grotter (grotteID, navn, svaerhedsgrad) VALUES (:grotteID, :navn, :level)");
-    query.bindValue(":grotteID", grotteId);
+    query.prepare("INSERT INTO Grotte (grotteID, navn, svaerhedsgrad, guld) VALUES (:grotteID, :navn, :level, :guld)");
+    query.bindValue(":grotteID", grotteId + 1);
     query.bindValue(":navn", QString::fromStdString(navn));
     query.bindValue(":level", grotteLevel);
+    query.bindValue(":guld", grotteGuld);
     if (!query.exec())
     {
         std::cerr << "Error inserting Grotte into database: " << query.lastError().text().toStdString() << std::endl;
@@ -49,16 +69,16 @@ void Grotte::udfordreGrotte(Hero &spiller, QSqlDatabase db)
     }
 
     // find the highest id of the grotteKamp in the database
-    QSqlQuery lastQuery(db);
-    lastQuery.exec("SELECT MAX(grotteKampID) AS grotteKampID FROM GrotteKamp");
+    QSqlQuery lastQueryGrotteKamp(db);
+    lastQueryGrotteKamp.exec("SELECT MAX(grotteKampID) AS grotteKampID FROM GrotteKamp");
     int grotteKampID = 0;
-    if (lastQuery.next())
+    if (lastQueryGrotteKamp.next())
     {
-        grotteKampID = lastQuery.value("grotteKampID").toInt();
+        grotteKampID = lastQueryGrotteKamp.value("grotteKampID").toInt();
     }
     else
     {
-        std::cerr << "Error fetching last GrotteKamp ID: " << lastQuery.lastError().text().toStdString() << std::endl;
+        std::cerr << "Error fetching last GrotteKamp ID: " << lastQueryGrotteKamp.lastError().text().toStdString() << std::endl;
         return;
     }
 

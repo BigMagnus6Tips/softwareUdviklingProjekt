@@ -16,6 +16,7 @@ private:
     int maxExperience;
     int gold = 0; // Initialize gold to 0
     std::vector<Vaaben> inventar; // Vector to hold the hero's weapons
+    int valgtVaaben; // The weapon currently selected by the hero
 public:
     Hero(/* args */);
     Hero(int id, std::string name, int health, int attackPower, int level, int experience, int maxExperience, int gold = 0)
@@ -29,6 +30,9 @@ public:
     void giveWeapon(const Vaaben &vaaben, QSqlDatabase db);
     Vaaben getWeapon(int index) const { return inventar.at(index); }
     void loadWeapons(QSqlDatabase db);
+    int angrib(Character &target) override;
+    std::vector<Vaaben> getInventar() const { return inventar; }
+    void startKamp() override;
 };
 
 

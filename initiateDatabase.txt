@@ -1,6 +1,6 @@
 CREATE TABLE Hero (
 	heroID INTEGER PRIMARY KEY,
-	name TEXT,
+	navn TEXT,
 	hp INTEGER,
 	styrke INTEGER,
 	xp INTEGER,
@@ -19,7 +19,8 @@ CREATE TABLE Fjende (
 CREATE TABLE Grotte (
 	grotteID INTEGER PRIMARY KEY,
 	navn TEXT,
-	svearhedsgrad INTEGER
+	svaerhedsgrad INTEGER,
+	guld INTEGER
 );
 
 CREATE TABLE Vaaben (
@@ -70,7 +71,7 @@ INSERT INTO Fjende (fjendeID, navn, hp, styrke, xpGivet) VALUES
 (9, 'Varulv', 45, 9, 1100),
 (10, 'Skelet', 8, 2, 200);
 
-INSERT INTO Hero (heroID, name, hp, styrke, xp, level) VALUES
+INSERT INTO Hero (heroID, navn, hp, styrke, xp, level) VALUES
 (1, 'Tim den Store', 20, 6, 0, 5),
 (2, 'Mester Jacob', 12, 3, 0, 2),
 (3, 'Fantino den Majestætiske', 15, 3, 0, 2),

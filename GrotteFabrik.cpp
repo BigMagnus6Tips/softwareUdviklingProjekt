@@ -9,11 +9,11 @@
 #include <chrono>
 #include <random>
 
-GrotteFabrik::GrotteFabrik(QSqlDatabase db)
+GrotteFabrik::GrotteFabrik(VaabenFabrik vaabenFabrik) : vaabenFabrik(vaabenFabrik)
 {
     
-    this->db = db; 
 }
+
 
 GrotteFabrik::~GrotteFabrik()
 {
@@ -31,6 +31,7 @@ Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int gr
     std::uniform_int_distribution<> goldDist(0, 199);
     std::uniform_int_distribution<> extraFjenderDist(0, 4);
     std::uniform_int_distribution<> fjendeIndexDist(0, fjender.size() - 1);
+    std::uniform_int_distribution<> grottePraemieDist(2, vaabenFabrik.getVaabenSkabelonCount() - 1);
 
     std::string navn;
     // Generate a random name for the Grotte
@@ -60,6 +61,11 @@ Grotte GrotteFabrik::bygTilfældigGrotte(int grotteLevel, int grotteType, int gr
 
         grotte.tilfojFjende(fjende);
     }
+    
+    // Set a random weapon as the Grotte's prize
+    int randomPraemieIndex = grottePraemieDist(gen);
+    Vaaben praemie = vaabenFabrik.bygVaabenEfterSkabelon(randomPraemieIndex);
+    grotte.setPraemie(praemie);
 
     return grotte;
 }

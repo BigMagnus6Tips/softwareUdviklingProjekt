@@ -24,8 +24,8 @@ Menu::Menu(/* args */)
     }
 
     // Initialize the GrotteFabrik
-    grotteFabrik = GrotteFabrik(db);
     vaabenFabrik.loadVaabenSkabeloner(); // Load weapon templates from the database
+    grotteFabrik = GrotteFabrik(vaabenFabrik);
 }
 
 Menu::~Menu()
@@ -179,7 +179,7 @@ void Menu::newHero()
 
     // add the new hero to the database
     QSqlQuery insertQuery(db);
-    insertQuery.prepare("INSERT INTO Hero (heroID, name, hp, styrke, level, xp, guld) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    insertQuery.prepare("INSERT INTO Hero (heroID, navn, hp, styrke, level, xp, guld) VALUES (?, ?, ?, ?, ?, ?, ?)");
     insertQuery.addBindValue(id);
     insertQuery.addBindValue(QString::fromStdString(navn));
     insertQuery.addBindValue(10); // Default hp
@@ -213,7 +213,7 @@ void Menu::loadHero()
     while (query.next())
     {
         int id = query.value("heroID").toInt();
-        std::string navn = query.value("name").toString().toStdString();
+        std::string navn = query.value("navn").toString().toStdString();
         int liv = query.value("hp").toInt();
         int styrke = query.value("styrke").toInt();
         int level = query.value("level").toInt();
@@ -362,7 +362,7 @@ void Menu::analyserDB()
 void Menu::analyserVisHeroer()
 {
     QSqlQuery query(db);
-    if (!query.exec("SELECT * FROM Hero ORDER BY name ASC"))
+    if (!query.exec("SELECT * FROM Hero ORDER BY navn ASC"))
     {
         std::cerr << "Kunne ikke hente helte: " << query.lastError().text().toStdString() << std::endl;
         return;
@@ -372,7 +372,7 @@ void Menu::analyserVisHeroer()
     while (query.next())
     {
         int id = query.value("heroID").toInt();
-        std::string navn = query.value("name").toString().toStdString();
+        std::string navn = query.value("navn").toString().toStdString();
         int antalBesejredeMonstre = query.value("antalBesejredeMonstre").toInt(); // Assuming this field exists in the Hero table
 
         std::cout << id << "\t" << navn << "\t" << antalBesejredeMonstre << std::endl;
@@ -398,7 +398,7 @@ void Menu::analyserVisHeroer()
     }
     if (heroQuery.next())
     {
-        std::string navn = heroQuery.value("name").toString().toStdString();
+        std::string navn = heroQuery.value("navn").toString().toStdString();
         int hp = heroQuery.value("hp").toInt();
         int styrke = heroQuery.value("styrke").toInt();
         int level = heroQuery.value("level").toInt();
@@ -480,7 +480,7 @@ void Menu::analyserVaaben(int id)
 
         // Find the hero who has killed the most enemies with this weapon
         QSqlQuery heroQuery(db);
-        heroQuery.prepare("SELECT Hero.name, COUNT(Kamp.fjendeID) AS antalBesejredeMonstre "
+        heroQuery.prepare("SELECT Hero.navn, COUNT(Kamp.fjendeID) AS antalBesejredeMonstre "
                           "FROM Hero "
                           "JOIN Kamp ON Hero.heroID = Kamp.heroID "
                           "WHERE Kamp.vaabenID = ? "
@@ -495,7 +495,7 @@ void Menu::analyserVaaben(int id)
         }
         if (heroQuery.next())
         {
-            std::string heldNavn = heroQuery.value("name").toString().toStdString();
+            std::string heldNavn = heroQuery.value("navn").toString().toStdString();
             int antalBesejredeMonstre = heroQuery.value("antalBesejredeMonstre").toInt();
             std::cout << "Helt der har dræbt flest monstre med dette våben: " << heldNavn
                       << " (" << antalBesejredeMonstre << " monstre)" << std::endl;

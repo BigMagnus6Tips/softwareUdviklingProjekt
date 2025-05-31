@@ -9,6 +9,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include "VaabenFabrik.h"
 
 class GrotteFabrik
 {
@@ -23,7 +24,7 @@ private:
     int grotteGuld;
     Grotte grotte; // Grotte object to be created
     // Factory method to create a Grotte
-    QSqlDatabase db;
+    VaabenFabrik vaabenFabrik;
     // Array of random prefix names for the Grotte
     std::string randomPrefixNames[10] = {"Mystiske", "Skjulte", "Gammle", "Forladte", "Udfordrende", "dødbringende", "mørke", "farlige", "magiske", "fortryllede"};
 
@@ -32,7 +33,7 @@ private:
 
 public:
     GrotteFabrik() {}
-    GrotteFabrik(QSqlDatabase db);
+    GrotteFabrik(VaabenFabrik vaabenFabrik);
     ~GrotteFabrik();
 
     // Method to create a random Grotte
