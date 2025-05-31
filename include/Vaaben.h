@@ -7,7 +7,8 @@ class Vaaben
 {
 private:
     std::string navn;
-    int id;
+    int typeID;
+    int id = 0;
     int skade;
     int skadestyrke;
     int holdbarhed;
@@ -15,8 +16,8 @@ private:
 public:
     Vaaben(/* args */);
     ~Vaaben();
-    Vaaben(int id, std::string navn, int skade, int skadestyrke, int holdbarhed, int pris)
-        : id(id), navn(navn), skade(skade), skadestyrke(skadestyrke), holdbarhed(holdbarhed), pris(pris) {}
+    Vaaben(int typeID, std::string navn, int skade, int skadestyrke, int holdbarhed, int pris)
+        : typeID(typeID), navn(navn), skade(skade), skadestyrke(skadestyrke), holdbarhed(holdbarhed), pris(pris) {}
     std::string getNavn() const { return navn; }
     int getSkade() const { return skade; }
     int getSkadestyrke() const { return skadestyrke; }
@@ -24,6 +25,8 @@ public:
     int getPris() const { return pris; }
     int getId() const { return id; }
     void setId(int newId) { id = newId; }
+    int getTypeID() const { return typeID; }
+    void setTypeID(int newTypeID) { typeID = newTypeID; }
     
 
     bool fjernholdbarhed(); // Decrease durability and check if the weapon is broken

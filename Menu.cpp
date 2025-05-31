@@ -150,9 +150,6 @@ void Menu::loadFjender()
         Fjende fjende(id, navn, liv, styrke, experienceGiven);
         fjender.push_back(fjende);
     }
-    
-
-
 }
 
 // creates a new Hero
@@ -164,7 +161,7 @@ void Menu::newHero()
     std::cout << "Indtast din helts navn: ";
     std::cin >> navn;
 
-    //check databasen for ledigt id
+    // check databasen for ledigt id
     QSqlQuery query(db);
     if (!query.exec("SELECT MAX(heroID) FROM Hero"))
     {
@@ -193,9 +190,8 @@ void Menu::newHero()
         return;
     }
 
-    spiller = Hero(id, navn, 10, 2, 1, 0, 1000); // Create a new hero with default values
+    spiller = Hero(id, navn, 10, 2, 1, 0, 1000);                    // Create a new hero with default values
     spiller.giveWeapon(vaabenFabrik.bygVaabenEfterSkabelon(1), db); // Give the hero a weapon
-
 }
 
 // loads a preloaded hero
@@ -255,11 +251,11 @@ void Menu::vaelgHero()
     // Check if input is valid
     if (std::cin.fail() || valg < 1 || valg > 3)
     {
-        std::cin.clear(); // Clear the input stream
+        std::cin.clear();                                                   // Clear the input stream
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
         std::cout << "Ugyldigt valg, prøv igen." << std::endl;
         vaelgHero(); // Recursively call to allow the user to try again
-        return; // Exit the current function to prevent further execution
+        return;      // Exit the current function to prevent further execution
     }
     switch (valg)
     {
@@ -327,7 +323,6 @@ void Menu::analyserDB()
     std::cout << "3. Forlad til hovedmenu" << std::endl;
     std::cout << "Indtast dit valg (1-3): ";
 
-
     // Check if input is valid
     std::cin >> valg;
     if (std::cin.fail() || valg < 1 || valg > 3)
@@ -336,7 +331,7 @@ void Menu::analyserDB()
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
         std::cout << "Ugyldigt valg, prøv igen." << std::endl;
         analyserDB(); // Recursively call to allow the user to try again
-        return; // Exit the current function to prevent further execution
+        return;       // Exit the current function to prevent further execution
     }
 
     switch (valg)
@@ -348,32 +343,38 @@ void Menu::analyserDB()
         analyserVisVaaben();
         break;
     case 3:
-        std::cout << "Tilbage til hovedmenuen..." << std::endl;
+        std::cout << "Start spillet..." << std::endl;
         return; // Exit the function to return to the main menu
     default:
         std::cout << "Ugyldigt valg, prøv igen." << std::endl;
         analyserDB();
         break;
     }
-
 }
 
 // Displays heroes in alphabetical order with an id and the number of monsters defeated by each hero, then gives the option to view a specific hero's details
 void Menu::analyserVisHeroer()
 {
     QSqlQuery query(db);
-    if (!query.exec("SELECT * FROM Hero ORDER BY navn ASC"))
+    if (!query.exec(R"(
+    SELECT Hero.heroID, Hero.navn, COUNT(Kamp.kampID) AS antalBesejredeMonstre
+    FROM Hero
+    LEFT JOIN Kamp ON Hero.heroID = Kamp.heroID
+    GROUP BY Hero.heroID, Hero.navn
+    ORDER BY Hero.navn ASC
+    )"))
     {
         std::cerr << "Kunne ikke hente helte: " << query.lastError().text().toStdString() << std::endl;
         return;
     }
+
     std::cout << "Helte i alfabestisk rækkefølge:" << std::endl;
     std::cout << "ID\tNavn\tAntal besejrede monstre" << std::endl;
     while (query.next())
     {
         int id = query.value("heroID").toInt();
         std::string navn = query.value("navn").toString().toStdString();
-        int antalBesejredeMonstre = query.value("antalBesejredeMonstre").toInt(); // Assuming this field exists in the Hero table
+        int antalBesejredeMonstre = query.value("antalBesejredeMonstre").toInt();
 
         std::cout << id << "\t" << navn << "\t" << antalBesejredeMonstre << std::endl;
     }
@@ -386,7 +387,7 @@ void Menu::analyserVisHeroer()
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
         std::cout << "Ugyldigt ID, prøv igen." << std::endl;
         analyserVisHeroer(); // Recursively call to allow the user to try again
-        return; // Exit the current function to prevent further execution
+        return;              // Exit the current function to prevent further execution
     }
     QSqlQuery heroQuery(db);
     heroQuery.prepare("SELECT * FROM Hero WHERE heroID = ?");
@@ -416,10 +417,63 @@ void Menu::analyserVisHeroer()
     {
         std::cout << "Ingen helt fundet med ID: " << id << std::endl;
     }
+
+    std::cout << "Vil du se våben brugt af denne helt? (1 for ja, 2 for nej): ";
+    int valg;
+    std::cin >> valg;
+    if (std::cin.fail() || (valg != 1 && valg != 2))
+    {
+        std::cin.clear();                                                   // Clear the input stream
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+        analyserVisHeroer(); // Recursively call to allow the user to try again
+        return;              // Exit the current function to prevent further execution
+    }
+    if (valg == 1)
+    {
+        // Display weapons used by the hero
+        QSqlQuery weaponQuery(db);
+        weaponQuery.prepare(R"(
+        SELECT 
+            Vaaben.vaabenID,
+            Vaaben.navn,
+            COUNT(Kamp.kampID) AS antalBesejredeMonstre
+        FROM 
+            Vaaben
+        JOIN 
+            HeroVaaben ON Vaaben.vaabenID = HeroVaaben.vaabenID
+        LEFT JOIN 
+            Kamp ON Kamp.heroVaabenID = HeroVaaben.heroVaabenID
+        WHERE 
+            HeroVaaben.heroID = ?
+        GROUP BY 
+            Vaaben.vaabenID, Vaaben.navn
+        ORDER BY 
+            Vaaben.navn ASC
+        )");
+
+        weaponQuery.addBindValue(id);
+        if (!weaponQuery.exec())
+        {
+            std::cerr << "Kunne ikke hente våben: " << weaponQuery.lastError().text().toStdString() << std::endl;
+            return;
+        }
+        std::cout << "Våben brugt af denne helt:" << std::endl;
+        std::cout << "ID\tNavn\tAntal besejrede monstre" << std::endl;
+        while (weaponQuery.next())
+        {
+            int vaabenId = weaponQuery.value("vaabenID").toInt();
+            std::string vaabenNavn = weaponQuery.value("navn").toString().toStdString();
+            int antalBesejredeMonstre = weaponQuery.value("antalBesejredeMonstre").toInt();
+
+            std::cout << vaabenId << "\t" << vaabenNavn << "\t" << antalBesejredeMonstre << std::endl;
+        }
+    }
+
     std::cout << "Tryk på Enter for at fortsætte..." << std::endl;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the newline character left in the input buffer
-    std::cin.get(); // Wait for the user to press Enter
-    analyserDB(); // Return to the main analysis menu
+    std::cin.get();                                                     // Wait for the user to press Enter
+    analyserDB();                                                       // Return to the main analysis menu
 }
 
 // Displays weapons and allows the user to view details of a specific weapon
@@ -427,110 +481,81 @@ void Menu::analyserVisHeroer()
 void Menu::analyserVisVaaben()
 {
     QSqlQuery query(db);
-    if (!query.exec("SELECT * FROM Vaaben"))
-    {
-        std::cerr << "Kunne ikke hente våben: " << query.lastError().text().toStdString() << std::endl;
-        return;
-    }
-    std::cout << "Våben:" << std::endl;
-    std::cout << "ID\tNavn\tStyrke\tPris" << std::endl;
-    while (query.next())
-    {
-        int id = query.value("vaabenID").toInt();
-        std::string navn = query.value("navn").toString().toStdString();
-        int styrke = query.value("styrke").toInt();
-        int pris = query.value("pris").toInt();
+    query.prepare(R"(
+        WITH KillsPerWeaponHero AS (
+            SELECT 
+                HeroVaaben.vaabenID,
+                Hero.navn AS heroNavn,
+                COUNT(Kamp.kampID) AS killCount,
+                ROW_NUMBER() OVER (
+                    PARTITION BY HeroVaaben.vaabenID 
+                    ORDER BY COUNT(Kamp.kampID) DESC
+                ) AS rank
+            FROM HeroVaaben
+            LEFT JOIN Kamp ON Kamp.heroVaabenID = HeroVaaben.heroVaabenID
+            LEFT JOIN Hero ON HeroVaaben.heroID = Hero.heroID
+            GROUP BY HeroVaaben.vaabenID, HeroVaaben.heroID
+        ),
+        TopUserPerWeapon AS (
+            SELECT 
+                vaabenID,
+                heroNavn,
+                killCount
+            FROM KillsPerWeaponHero
+            WHERE rank = 1
+        )
+        SELECT 
+            Vaaben.vaabenID,
+            Vaaben.navn AS vaabenNavn,
+            Vaaben.skade,
+            Vaaben.skadestyrke,
+            Vaaben.pris,
+            COALESCE(TopUserPerWeapon.heroNavn, 'Ingen bruger') AS heroNavn,
+            COALESCE(TopUserPerWeapon.killCount, 0) AS killCount
+        FROM Vaaben
+        LEFT JOIN TopUserPerWeapon ON Vaaben.vaabenID = TopUserPerWeapon.vaabenID
+        ORDER BY Vaaben.vaabenID ASC;
+    )");
 
-        std::cout << id << "\t" << navn << "\t" << styrke << "\t" << pris << std::endl;
-    }
-    std::cout << "Vælg et våben for at se detaljer (indtast ID): ";
-    int id;
-    std::cin >> id;
-    if (std::cin.fail())
-    {
-        std::cin.clear();                                                   // Clear the input stream
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
-        std::cout << "Ugyldigt ID, prøv igen." << std::endl;
-        analyserVisVaaben(); // Recursively call to allow the user to try again
-        return; // Exit the current function to prevent further execution
-    }
-    analyserVaaben(id);
-}
-
-// Displays details of a specific weapon based on its ID, showing its name, and which hero has killed the most enemies with it
-void Menu::analyserVaaben(int id)
-{
-    QSqlQuery query(db);
-    query.prepare("SELECT * FROM Vaaben WHERE vaabenID = ?");
-    query.addBindValue(id);
     if (!query.exec())
     {
         std::cerr << "Kunne ikke hente våben: " << query.lastError().text().toStdString() << std::endl;
         return;
     }
-    if (query.next())
+
+    std::cout << "Våben:" << std::endl;
+    std::cout << "ID\tNavn\tSkade\tStyrke\tPris\tHyppigst anvendt af:" << std::endl;
+    while (query.next())
     {
-        std::string navn = query.value("navn").toString().toStdString();
-        int styrke = query.value("styrke").toInt();
+        int id = query.value("vaabenID").toInt();
+        std::string navn = query.value("vaabenNavn").toString().toStdString();
+        int skade = query.value("skade").toInt();
+        int styrke = query.value("skadestyrke").toInt();
         int pris = query.value("pris").toInt();
+        std::string heroNavn = query.value("heroNavn").toString().toStdString();
+        int kills = query.value("killCount").toInt();
 
-        std::cout << "Detaljer for våben " << navn << ":" << std::endl;
-        std::cout << "Styrke: " << styrke << std::endl;
-        std::cout << "Pris: " << pris << std::endl;
+        std::cout << id << "\t" << navn << "\t" << skade << "\t" << styrke << "\t" << pris
+                  << "\t" << heroNavn << " (" << kills << " kills)" << std::endl;
+    }
 
-        // Find the hero who has killed the most enemies with this weapon
-        QSqlQuery heroQuery(db);
-        heroQuery.prepare("SELECT Hero.navn, COUNT(Kamp.fjendeID) AS antalBesejredeMonstre "
-                          "FROM Hero "
-                          "JOIN Kamp ON Hero.heroID = Kamp.heroID "
-                          "WHERE Kamp.vaabenID = ? "
-                          "GROUP BY Hero.heroID "
-                          "ORDER BY antalBesejredeMonstre DESC "
-                          "LIMIT 1");
-        heroQuery.addBindValue(id);
-        if (!heroQuery.exec())
-        {
-            std::cerr << "Kunne ikke hente helte: " << heroQuery.lastError().text().toStdString() << std::endl;
-            return;
-        }
-        if (heroQuery.next())
-        {
-            std::string heldNavn = heroQuery.value("navn").toString().toStdString();
-            int antalBesejredeMonstre = heroQuery.value("antalBesejredeMonstre").toInt();
-            std::cout << "Helt der har dræbt flest monstre med dette våben: " << heldNavn
-                      << " (" << antalBesejredeMonstre << " monstre)" << std::endl;
-        }
-        else
-        {
-            std::cout << "Ingen helt har dræbt monstre med dette våben." << std::endl;
-        }
-    }
-    else
-    {
-        std::cout << "Ingen våben fundet med ID: " << id << std::endl;
-    }
-    std::cout << "Tryk på Enter for at fortsætte..." << std::endl;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the newline character left in the input buffer
-    std::cin.get(); // Wait for the user to press Enter
-    analyserDB(); // Return to the main analysis menu
 }
-    
+
 void Menu::vaelganalyser()
 {
     std::cout << "Vil du analysere databasen? (1 for ja, 2 for nej): ";
     int valg;
     std::cin >> valg;
+    if (std::cin.fail() || (valg != 1 && valg != 2))
+    {
+        std::cin.clear();                                                   // Clear the input stream
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
+        vaelganalyser(); // Recursively call to allow the user to try again
+        return;          // Exit the current function to prevent further execution
+    }
     if (valg == 1)
     {
         analyserDB();
-    }
-    else if (valg == 2)
-    {
-        std::cout << "Du har valgt ikke at analysere databasen." << std::endl;
-    }
-    else
-    {
-        std::cout << "Ugyldigt valg, prøv igen." << std::endl;
-        vaelganalyser();
     }
 }

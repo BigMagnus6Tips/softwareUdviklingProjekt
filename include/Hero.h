@@ -28,7 +28,7 @@ public:
     int getLevel() const { return level; }
     void giveGold(int guld, QSqlDatabase db);
     void giveWeapon(const Vaaben &vaaben, QSqlDatabase db);
-    Vaaben getWeapon(int index) const { return inventar.at(index); }
+    Vaaben getWeapon() const { return inventar.at(valgtVaaben);}
     void loadWeapons(QSqlDatabase db);
     int angrib(Character &target) override;
     std::vector<Vaaben> getInventar() const { return inventar; }

@@ -114,7 +114,7 @@ void Kamp::slutKamp()
         query.bindValue(":kampID", kampID + 1); // Auto-incremented ID
         query.bindValue(":heroID", spiller.getId());
         query.bindValue(":fjendeID", modstander.getId());
-        query.bindValue(":heroVaabenID", spiller.getWeapon(0).getId());
+        query.bindValue(":heroVaabenID", spiller.getWeapon().getId());
         id = kampID + 1; // Set the ID of the current battle
         if (!query.exec())
         {

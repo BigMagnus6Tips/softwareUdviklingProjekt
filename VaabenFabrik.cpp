@@ -35,7 +35,7 @@ Vaaben VaabenFabrik::bygVaabenEfterSkabelon(int id)
     // Find the weapon template by ID
     for (const Vaaben &skabelon : vaabenSkabeloner)
     {
-        if (skabelon.getId() == id)
+        if (skabelon.getTypeID() == id)
         {
             // Create a new weapon based on the template
             Vaaben nytVaaben = skabelon;
@@ -54,6 +54,7 @@ Vaaben VaabenFabrik::bygVaabenEfterSkabelon(int id)
             {
                 maxId = query.value(0).toInt();
             }
+
             nytVaaben.setId(maxId + 1); // Set a new ID for the weapon
 
             return nytVaaben; // Return the new weapon

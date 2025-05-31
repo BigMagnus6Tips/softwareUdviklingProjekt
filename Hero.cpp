@@ -97,7 +97,7 @@ void Hero::giveWeapon(const Vaaben &vaaben, QSqlDatabase db)
     query.prepare("INSERT INTO HeroVaaben (heroVaabenID, heroID, vaabenID, holdbarhed) VALUES (:heroVaabenID, :heroID, :vaabenID, :holdbarhed)");
     query.bindValue(":heroVaabenID", vaaben.getId()); // Assuming getId() returns a unique ID for the weapon
     query.bindValue(":heroID", id);
-    query.bindValue(":vaabenID", vaaben.getId());
+    query.bindValue(":vaabenID", vaaben.getTypeID());
     query.bindValue(":holdbarhed", vaaben.getHoldbarhed()); // Assuming getHoldbarhed() returns the durability of the weapon
 
     if (!query.exec())
@@ -167,7 +167,7 @@ void Hero::startKamp()
 
         if (choice >= 0 && choice < static_cast<int>(inventar.size()))
         {
-            if (inventar[choice].getHoldbarhed() <= 0)
+            if (inventar[choice].getHoldbarhed() == 0)
             {
                 std::cout << "Dette våben er ødelagt. Vælg et andet våben." << std::endl;
                 continue; // Skip to the next iteration if the weapon is broken

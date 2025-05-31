@@ -26,10 +26,7 @@ private:
     
 
     void analyserVisHeroer();
-    void analyserHeroVedIndex(int index);
     void analyserVisVaaben();
-    void analyserVaaben(int index);
-    void analyserheroVaaben();
 
 
 public:
